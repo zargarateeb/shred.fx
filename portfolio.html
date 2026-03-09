@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | ShredFX</title>
+    <title>Portfolio | ShredFX — Long-form showcase</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
@@ -169,9 +169,140 @@
             color: var(--dark);
         }
 
+        /* ===== LONG VIDEO SHOWCASE (NEW SECTION) ===== */
+        .long-video-showcase {
+            padding: 50px 0 20px;
+        }
+        .showcase-card {
+            background: linear-gradient(145deg, #141414 0%, #0d0d0d 100%);
+            border: 1px solid #2a2a2a;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 25px 40px rgba(0,0,0,0.7);
+            transition: 0.3s;
+        }
+        .showcase-card:hover {
+            border-color: var(--primary);
+            box-shadow: 0 30px 50px rgba(0, 255, 136, 0.12);
+        }
+        .showcase-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+            align-items: center;
+        }
+        .showcase-thumbnail {
+            flex: 1 1 380px;
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -10px black;
+            border: 2px solid #2b2b2b;
+            transition: 0.3s;
+            aspect-ratio: 16/9;
+            background: #111;
+        }
+        .showcase-thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.5s;
+        }
+        .showcase-thumbnail:hover img {
+            transform: scale(1.02);
+        }
+        .play-button-large {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: var(--primary);
+            color: #0a0a0a;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            opacity: 0.9;
+            transition: 0.3s;
+            border: 3px solid rgba(255,255,255,0.2);
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(0,255,136,0.5);
+        }
+        .play-button-large:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+            opacity: 1;
+            background: #fff;
+            color: var(--dark);
+            border-color: var(--primary);
+        }
+        .showcase-details {
+            flex: 2 1 500px;
+        }
+        .showcase-details h2 {
+            font-size: 2.4rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        .showcase-meta {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+            color: var(--text-light);
+            font-weight: 400;
+            flex-wrap: wrap;
+        }
+        .showcase-meta span i {
+            color: var(--primary);
+            margin-right: 8px;
+        }
+        .showcase-description {
+            font-size: 1.1rem;
+            color: #d0d0d0;
+            margin-bottom: 25px;
+            max-width: 650px;
+        }
+        .showcase-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+        .showcase-tags .tag {
+            background: rgba(0, 255, 136, 0.1);
+            color: var(--primary);
+            padding: 8px 22px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            border: 1px solid rgba(0,255,136,0.2);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 12px 30px;
+            border-radius: 40px;
+            font-weight: 600;
+            transition: 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        .btn-outline:hover {
+            background: var(--primary);
+            color: var(--dark);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,255,136,0.2);
+        }
+
         /* ===== PORTFOLIO GRID ===== */
         .portfolio-grid-section {
-            padding: 60px 0;
+            padding: 40px 0 60px;
         }
 
         .portfolio-grid {
@@ -470,26 +601,27 @@
             .page-title {
                 font-size: 2.5rem;
             }
-            
             .nav-links {
                 display: none;
             }
-            
             .menu-toggle {
                 display: block;
             }
-            
             .portfolio-grid {
                 grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             }
-            
             .filter-tabs {
                 gap: 10px;
             }
-            
             .filter-btn {
                 padding: 8px 20px;
                 font-size: 0.9rem;
+            }
+            .showcase-card {
+                padding: 25px;
+            }
+            .showcase-details h2 {
+                font-size: 2rem;
             }
         }
 
@@ -497,17 +629,19 @@
             .page-title {
                 font-size: 2rem;
             }
-            
             .portfolio-grid {
                 grid-template-columns: 1fr;
             }
-            
             .portfolio-cta {
                 padding: 40px 20px;
             }
-            
             .portfolio-cta h2 {
                 font-size: 2rem;
+            }
+            .play-button-large {
+                width: 60px;
+                height: 60px;
+                font-size: 1.5rem;
             }
         }
     </style>
@@ -555,7 +689,48 @@
         </div>
     </section>
 
-    <!-- Portfolio Grid -->
+    <!-- NEW LONG YOUTUBE VIDEO SHOWCASE with your custom thumbnail -->
+<section class="long-video-showcase">
+    <div class="container">
+        <div class="showcase-card">
+            <div class="showcase-grid">
+                <!-- Thumbnail with play button using your custom image -->
+                <div class="showcase-thumbnail" id="longVideoThumb">
+                    <img src="https://ik.imagekit.io/5xwchyocd7/thumbnail_shredfx.png?updatedAt=1773037411730" alt="ShredFX Custom Thumbnail" loading="lazy">
+                    <div class="play-button-large" id="playLongVideoBtn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                </div>
+                <div class="showcase-details">
+                    <h2>Long‑form cinematic <span class="highlight">masterpiece</span></h2>
+                    <div class="showcase-meta">
+                        <span><i class="fas fa-clock"></i> 1:09 min</span>
+                        <span><i class="fas fa-calendar-alt"></i> Full edit</span>
+                        <span><i class="fas fa-tag"></i> YouTube long video</span>
+                    </div>
+                    <p class="showcase-description">
+                        This is a complete storytelling edit — cinematic color grading, sound design, 
+                        seamless transitions, and pacing that keeps viewers hooked. Perfect example of 
+                        my long‑form YouTube work. Watch the full video to see the depth of editing.
+                    </p>
+                    <div class="showcase-tags">
+                        <span class="tag">cinematic</span>
+                        <span class="tag">storytelling</span>
+                        <span class="tag">color grading</span>
+                        <span class="tag">sound design</span>
+                        <span class="tag">youtube</span>
+                        <span class="tag">long video</span>
+                    </div>
+                    <a href="https://youtu.be/TLVrjbMKFdk" target="_blank" class="btn-outline" id="directLinkBtn">
+                        <i class="fab fa-youtube"></i> Watch full video on YouTube
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <!-- Portfolio Grid (existing) -->
     <section class="portfolio-grid-section">
         <div class="container">
             <div class="portfolio-grid">
@@ -689,33 +864,6 @@
                     </div>
                 </div>
 
-                <!-- Video 6 - Coming Soon -->
-                <div class="portfolio-item" data-category="youtube">
-                    <div class="portfolio-video">
-                        <div class="empty-state" style="height: 100%; display: flex; align-items: center; justify-content: center; background: #111;">
-                            <div style="text-align: center; padding: 20px;">
-                                <div class="empty-icon">
-                                    <i class="fas fa-film"></i>
-                                </div>
-                                <h3 style="color: var(--text); margin-bottom: 10px;">Vlog Edit</h3>
-                                <p style="color: var(--text-light);">YouTube vlog edit coming soon</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="portfolio-info">
-                        <h3>YouTube Vlog Edit</h3>
-                        <p>Full-length vlog editing with B-roll, sound design, color grading, and storytelling.</p>
-                        <div class="tags">
-                            <span class="tag">Vlog</span>
-                            <span class="tag">YouTube</span>
-                            <span class="tag">Storytelling</span>
-                            <span class="tag">B-roll</span>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
             <!-- Empty State for More Videos -->
             <div class="empty-state">
                 <div class="empty-icon">
@@ -791,142 +939,147 @@
 
     <!-- JavaScript -->
     <script>
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('menuToggle');
-        const navLinks = document.querySelector('.nav-links');
-        
-        menuToggle.addEventListener('click', () => {
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-            if (navLinks.style.display === 'flex') {
-                navLinks.style.flexDirection = 'column';
-                navLinks.style.position = 'absolute';
-                navLinks.style.top = '100%';
-                navLinks.style.left = '0';
-                navLinks.style.right = '0';
-                navLinks.style.background = 'rgba(10, 10, 10, 0.98)';
-                navLinks.style.padding = '20px';
-                navLinks.style.gap = '20px';
-                navLinks.style.borderTop = '1px solid #333';
-            }
-        });
+        (function() {
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('menuToggle');
+            const navLinks = document.querySelector('.nav-links');
+            
+            menuToggle.addEventListener('click', () => {
+                navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+                if (navLinks.style.display === 'flex') {
+                    navLinks.style.flexDirection = 'column';
+                    navLinks.style.position = 'absolute';
+                    navLinks.style.top = '100%';
+                    navLinks.style.left = '0';
+                    navLinks.style.right = '0';
+                    navLinks.style.background = 'rgba(10, 10, 10, 0.98)';
+                    navLinks.style.padding = '20px';
+                    navLinks.style.gap = '20px';
+                    navLinks.style.borderTop = '1px solid #333';
+                }
+            });
 
-        // Close menu on window resize
-        window.addEventListener('resize', () => {
-            if (window.innerWidth > 768) {
-                navLinks.style.display = 'flex';
-                navLinks.style.flexDirection = 'row';
-                navLinks.style.position = 'static';
-                navLinks.style.background = 'transparent';
-                navLinks.style.padding = '0';
-                navLinks.style.borderTop = 'none';
-            } else {
-                navLinks.style.display = 'none';
-            }
-        });
+            window.addEventListener('resize', () => {
+                if (window.innerWidth > 768) {
+                    navLinks.style.display = 'flex';
+                    navLinks.style.flexDirection = 'row';
+                    navLinks.style.position = 'static';
+                    navLinks.style.background = 'transparent';
+                    navLinks.style.padding = '0';
+                    navLinks.style.borderTop = 'none';
+                } else {
+                    navLinks.style.display = 'none';
+                }
+            });
 
-        // Portfolio Filter Functionality
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        const portfolioItems = document.querySelectorAll('.portfolio-item');
+            // Portfolio Filter Functionality
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const portfolioItems = document.querySelectorAll('.portfolio-item');
 
-        filterButtons.forEach(button => {
-            button.addEventListener('click', () => {
-                // Remove active class from all buttons
-                filterButtons.forEach(btn => btn.classList.remove('active'));
-                // Add active class to clicked button
-                button.classList.add('active');
-                
-                const filterValue = button.getAttribute('data-filter');
-                
-                // Filter portfolio items
-                portfolioItems.forEach(item => {
-                    if (filterValue === 'all') {
-                        item.style.display = 'block';
-                    } else {
-                        const categories = item.getAttribute('data-category').split(' ');
-                        if (categories.includes(filterValue)) {
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    
+                    const filterValue = button.getAttribute('data-filter');
+                    
+                    portfolioItems.forEach(item => {
+                        if (filterValue === 'all') {
                             item.style.display = 'block';
                         } else {
-                            item.style.display = 'none';
+                            const categories = item.getAttribute('data-category').split(' ');
+                            if (categories.includes(filterValue)) {
+                                item.style.display = 'block';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        }
+                    });
+                });
+            });
+
+            // Play button inside small cards
+            document.querySelectorAll('.play-btn').forEach(button => {
+                button.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const videoContainer = button.closest('.portfolio-video');
+                    const iframe = videoContainer.querySelector('iframe');
+                    
+                    if (iframe && iframe.src.includes('youtube.com')) {
+                        const videoId = iframe.src.split('/embed/')[1];
+                        window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
+                    }
+                });
+            });
+
+            // Click on portfolio item (excluding play button) to open video
+            portfolioItems.forEach(item => {
+                item.addEventListener('click', (e) => {
+                    if (!e.target.closest('.play-btn') && !e.target.closest('.btn')) {
+                        const iframe = item.querySelector('iframe');
+                        if (iframe && iframe.src.includes('youtube.com')) {
+                            const videoId = iframe.src.split('/embed/')[1];
+                            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
                         }
                     }
                 });
             });
-        });
 
-        // Play button functionality
-        document.querySelectorAll('.play-btn').forEach(button => {
-            button.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const videoContainer = button.closest('.portfolio-video');
-                const iframe = videoContainer.querySelector('iframe');
-                
-                // For YouTube videos
-                if (iframe.src.includes('youtube.com')) {
-                    const videoId = iframe.src.split('/embed/')[1];
-                    window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
-                }
-                // For Instagram videos
-                else if (iframe.src.includes('instagram.com')) {
-                    const postId = iframe.src.split('/reel/')[1]?.split('/')[0];
-                    if (postId) {
-                        window.open(`https://www.instagram.com/reel/${postId}/`, '_blank');
-                    }
-                }
-            });
-        });
+            // **** LONG VIDEO SHOWCASE interactions ****
+            const longVideoThumb = document.getElementById('longVideoThumb');
+            const playBtnLarge = document.getElementById('playLongVideoBtn');
+            const directBtn = document.getElementById('directLinkBtn');
+            const youtubeLongUrl = 'https://youtu.be/TLVrjbMKFdk';
 
-        // Click on portfolio item to open video
-        portfolioItems.forEach(item => {
-            item.addEventListener('click', (e) => {
-                if (!e.target.closest('.play-btn') && !e.target.closest('.btn')) {
-                    const iframe = item.querySelector('iframe');
-                    if (iframe && iframe.src) {
-                        if (iframe.src.includes('youtube.com')) {
-                            const videoId = iframe.src.split('/embed/')[1];
-                            window.open(`https://www.youtube.com/watch?v=${videoId}`, '_blank');
-                        } else if (iframe.src.includes('instagram.com')) {
-                            const postId = iframe.src.split('/reel/')[1]?.split('/')[0];
-                            if (postId) {
-                                window.open(`https://www.instagram.com/reel/${postId}/`, '_blank');
-                            }
-                        }
-                    }
-                }
-            });
-        });
-
-        // Highlight current page in nav
-        document.querySelectorAll('.nav-link').forEach(link => {
-            if (link.href === window.location.href || 
-                (window.location.pathname.includes('portfolio') && link.href.includes('portfolio.html'))) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
+            function openLongVideo() {
+                window.open(youtubeLongUrl, '_blank');
             }
-        });
 
-        // Add animation to portfolio items on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
+            // click on thumbnail area or big play button
+            if (longVideoThumb) {
+                longVideoThumb.addEventListener('click', openLongVideo);
+            }
+            if (playBtnLarge) {
+                playBtnLarge.addEventListener('click', (e) => {
+                    e.stopPropagation();  // avoid double if nested
+                    openLongVideo();
+                });
+            }
+            // direct link already works, but we keep it consistent
+            if (directBtn) {
+                directBtn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // just to be safe
+                });
+            }
 
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    entry.target.style.opacity = '1';
-                    entry.target.style.transform = 'translateY(0)';
+            // highlight current page in nav
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if (link.href === window.location.href || 
+                    (window.location.pathname.includes('portfolio') && link.href.includes('portfolio.html'))) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
                 }
             });
-        }, observerOptions);
 
-        // Observe all portfolio items
-        document.querySelectorAll('.portfolio-item').forEach(item => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(20px)';
-            item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-            observer.observe(item);
-        });
+            // scroll animations for portfolio items
+            const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            document.querySelectorAll('.portfolio-item').forEach(item => {
+                item.style.opacity = '0';
+                item.style.transform = 'translateY(20px)';
+                item.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(item);
+            });
+        })();
     </script>
 </body>
 </html>
