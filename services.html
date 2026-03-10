@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>PRICING | ShredFX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <style>
+        * { margin:0; padding:0; box-sizing:border-box; }
+        :root {
+            --frosted-mint: #d8f3dcff;
+            --celadon: #b7e4c7ff;
+            --celadon-2: #95d5b2ff;
+            --mint-leaf: #74c69dff;
+            --mint-leaf-2: #52b788ff;
+            --sea-green: #40916cff;
+            --dark-emerald: #2d6a4fff;
+            --pine-teal: #1b4332ff;
+            --evergreen: #081c15ff;
+            
+            --primary: var(--mint-leaf);
+            --primary-dark: var(--sea-green);
+            --primary-deep: var(--dark-emerald);
+            --bg-light: var(--frosted-mint);
+            --bg-soft: var(--celadon);
+            --bg-card: white;
+            --text: var(--evergreen);
+            --text-soft: var(--pine-teal);
+            --text-light: var(--dark-emerald);
+            --border: var(--celadon-2);
+            --shadow: 0 10px 30px rgba(29, 67, 50, 0.1);
+            --shadow-hover: 0 20px 40px rgba(82, 183, 136, 0.2);
+            --gradient: linear-gradient(135deg, var(--mint-leaf) 0%, var(--sea-green) 100%);
+            --warning: #ff8a8a;
+            --gold: #ffd966;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+            font-size: 14px;
+        }
+        .container { 
+            width: 100%;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3, .price { font-family: 'Archivo Black', sans-serif; letter-spacing: -0.5px; }
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .fx { color: var(--sea-green); }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--mint-leaf);
+            position: fixed; top:0; width:100%; z-index:1000;
+            box-shadow: var(--shadow);
+        }
+        .nav-container {
+            display: flex; justify-content: space-between; align-items: center; padding: 15px 20px;
+        }
+        .logo {
+            display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--evergreen); font-size: 24px; font-family: 'Archivo Black', sans-serif; text-transform: uppercase;
+        }
+        .logo-img { height: 40px; filter: drop-shadow(0 2px 5px var(--mint-leaf)); }
+        .nav-links { display: none; flex-direction: column; position: absolute; top:100%; left:0; right:0; background: white; padding:20px; gap:15px; border-top:3px solid var(--mint-leaf); box-shadow:var(--shadow); }
+        .nav-links.active { display: flex; }
+        .nav-link { color: var(--pine-teal); text-decoration: none; font-size:16px; font-weight:600; display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--celadon); }
+        .nav-link i { color: var(--sea-green); }
+        .nav-link.active { color: var(--dark-emerald); font-weight:800; }
+        .menu-toggle { background: white; border:2px solid var(--mint-leaf); color:var(--sea-green); width:45px; height:45px; border-radius:12px; font-size:20px; cursor:pointer; }
+
+        /* HEADER */
+        .services-header {
+            padding: 120px 0 30px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--frosted-mint) 0%, var(--celadon) 100%);
+        }
+        .page-title { 
+            font-size: 3rem; 
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--evergreen);
+        }
+        .first-order-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: inline-block;
+            border-radius: 50px;
+            box-shadow: var(--shadow-hover);
+            border: 3px solid white;
+        }
+
+        /* FLASH SALE */
+        .flash-sale {
+            background: linear-gradient(135deg, var(--mint-leaf-2) 0%, var(--sea-green) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: var(--shadow);
+            border: 2px solid white;
+        }
+        .flash-sale p { font-size: 1.2rem; font-weight: 800; text-transform: uppercase; }
+
+        /* PRICING SECTIONS */
+        .pricing-section {
+            padding: 50px 0;
+        }
+        .section-title { 
+            font-size: 2.4rem; 
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--evergreen);
+        }
+        .section-title span {
+            color: var(--dark-emerald);
+            border-bottom: 4px solid var(--mint-leaf);
+            padding-bottom: 5px;
+        }
+
+        /* HORIZONTAL SCROLL CARDS */
+        .pricing-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0 30px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .pricing-scroll::-webkit-scrollbar { display: none; }
+
+        .pricing-card {
+            flex: 0 0 280px;
+            background: white;
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--celadon);
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border: 3px solid var(--sea-green);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--gradient);
+            color: white;
+            padding: 6px 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .plan-name { 
+            font-size: 1.6rem; 
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--dark-emerald);
+        }
+
+        .price-wrapper {
+            background: var(--frosted-mint);
+            padding: 15px;
+            border-radius: 16px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px solid var(--mint-leaf);
+        }
+
+        .price { 
+            font-size: 2.5rem; 
+            color: var(--sea-green);
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--pine-teal);
+            font-size: 1rem;
+        }
+
+        .discount-badge {
+            background: var(--warning);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin-left: 8px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        .features-list li {
+            padding: 8px 0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--celadon);
+        }
+        .features-list li i { color: var(--sea-green); }
+
+        .pricing-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-align: center;
+            border-radius: 40px;
+            border: none;
+            box-shadow: 0 5px 15px rgba(45, 106, 79, 0.3);
+        }
+
+        /* PACKAGES SCROLL */
+        .packages-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0 30px;
+        }
+        .package-card {
+            flex: 0 0 300px;
+            background: white;
+            border-radius: 24px;
+            padding: 30px 25px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--celadon);
+        }
+        .package-card.best-value {
+            border: 3px solid var(--gold);
+            box-shadow: 0 20px 40px rgba(255,215,0,0.15);
+        }
+        .best-value-badge {
+            background: var(--gold);
+            color: var(--evergreen);
+            padding: 6px 20px;
+            border-radius: 30px;
+            font-weight: 800;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+        .package-name { 
+            font-size: 2rem; 
+            text-transform: uppercase;
+            color: var(--dark-emerald);
+        }
+        .package-price { 
+            font-size: 2.5rem; 
+            color: var(--sea-green);
+        }
+        .package-savings { 
+            background: var(--frosted-mint); 
+            color: var(--dark-emerald); 
+            padding: 6px 12px; 
+            border-radius: 30px; 
+            display: inline-block; 
+            margin: 10px 0; 
+            font-weight: 600; 
+            border: 1px solid var(--mint-leaf);
+        }
+
+        /* BULK GRID */
+        .bulk-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 30px 0;
+        }
+        .bulk-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--celadon);
+        }
+        .bulk-quantity { 
+            font-size: 1.6rem; 
+            font-weight: 800; 
+            color: var(--sea-green);
+        }
+        .bulk-price { 
+            font-size: 2rem; 
+            font-weight: 800; 
+            margin: 10px 0;
+            color: var(--dark-emerald);
+        }
+        .bulk-save { 
+            background: var(--warning); 
+            color: white; 
+            padding: 6px 15px; 
+            border-radius: 30px; 
+            display: inline-block; 
+            font-weight: 600; 
+        }
+
+        /* PROCESS */
+        .process-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 40px 0;
+        }
+        .process-step {
+            background: white;
+            border-radius: 20px;
+            padding: 25px 15px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--celadon);
+        }
+        .step-number {
+            width: 45px; 
+            height: 45px; 
+            background: var(--gradient); 
+            color: white; 
+            font-size: 1.4rem; 
+            font-weight: 800; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            margin: 0 auto 15px; 
+            border-radius: 15px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--evergreen);
+            padding: 60px 0 30px;
+            color: white;
+        }
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .footer-logo {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+        }
+        .footer-logo img { height: 40px; filter: brightness(0) invert(1); }
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: var(--pine-teal);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+        }
+        .footer-section h3 { color: var(--mint-leaf); margin-bottom: 15px; }
+        .footer-section ul li { list-style: none; margin-bottom: 8px; }
+        .footer-section ul li a { color: var(--celadon); text-decoration: none; }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid var(--pine-teal);
+            color: var(--celadon);
+        }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float {
+            position: fixed; bottom: 20px; right: 20px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; text-decoration: none; z-index: 999; box-shadow: 0 5px 20px rgba(37,211,102,0.3); border: 3px solid white;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links { display: flex !important; flex-direction: row; position: static; background: transparent; border: none; padding: 0; gap: 30px; }
+            .nav-link { border: none; }
+            .menu-toggle { display: none; }
+            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; }
+            .footer-logo { grid-column: auto; }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://wa.me/917780870376" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo"><img src="https://ik.imagekit.io/5xwchyocd7/New%20Project%202%20_2B803B3_.png" class="logo-img"> SHRED<span class="fx">FX</span></a>
+            <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars-staggered"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> HOME</a>
+                <a href="portfolio.html" class="nav-link"><i class="fas fa-play-circle"></i> WORK</a>
+                <a href="services.html" class="nav-link active"><i class="fas fa-tags"></i> PRICING</a>
+                <a href="contact.html" class="nav-link"><i class="fas fa-phone-alt"></i> CONTACT</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="services-header">
+        <div class="container">
+            <h1 class="page-title">PRICING <span style="color: var(--sea-green);">💸</span></span></h1>
+            <div class="first-order-badge">🎁 FIRST ORDER: 30% OFF + FREE THUMBNAIL</div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- FLASH SALE -->
+        <div class="flash-sale">
+            <p>⚡ FLASH SALE: EXTRA 20% OFF ON ₹1000+ ORDERS ⚡</p>
+        </div>
+
+        <!-- THUMBNAILS -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>🎨 THUMBNAILS</span></h2>
+            <p style="color: var(--pine-teal); margin-bottom: 10px;">CLICKABLE. BOLD. GREEN.</p>
+            <div class="pricing-scroll">
+                <div class="pricing-card">
+                    <div class="plan-name">SINGLE</div>
+                    <div class="price-wrapper"><span class="price">₹80</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Custom design</li>
+                        <li><i class="fas fa-check"></i> 1 revision</li>
+                        <li><i class="fas fa-check"></i> 12h delivery</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">💸 BEST VALUE</div>
+                    <div class="plan-name">5 PACK</div>
+                    <div class="price-wrapper"><span class="price">₹350</span> <span class="original-price">₹400</span> <span class="discount-badge">SAVE ₹50</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 5 thumbnails</li>
+                        <li><i class="fas fa-check"></i> 2 revisions each</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="plan-name">10 PACK</div>
+                    <div class="price-wrapper"><span class="price">₹600</span> <span class="original-price">₹800</span> <span class="discount-badge">SAVE ₹200</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 10 thumbnails</li>
+                        <li><i class="fas fa-check"></i> 3 revisions</li>
+                        <li><i class="fas fa-check"></i> Source files</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- REELS -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>📱 REELS / SHORTS</span></h2>
+            <p style="color: var(--pine-teal); margin-bottom: 10px;">VIRAL. FRESH. FAST.</p>
+            <div class="pricing-scroll">
+                <div class="pricing-card">
+                    <div class="plan-name">BASIC</div>
+                    <div class="price-wrapper"><span class="price">₹200</span> <span class="original-price">₹260</span> <span class="discount-badge">30%</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 1 min</li>
+                        <li><i class="fas fa-check"></i> Basic cuts</li>
+                        <li><i class="fas fa-check"></i> Captions</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">💸 MOST POPULAR</div>
+                    <div class="plan-name">STANDARD</div>
+                    <div class="price-wrapper"><span class="price">₹400</span> <span class="original-price">₹520</span> <span class="discount-badge">SAVE ₹120</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 2 mins</li>
+                        <li><i class="fas fa-check"></i> Color grading</li>
+                        <li><i class="fas fa-check"></i> Text animations</li>
+                        <li><i class="fas fa-check"></i> 2 revisions</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="plan-name">PREMIUM</div>
+                    <div class="price-wrapper"><span class="price">₹800</span> <span class="original-price">₹1040</span> <span class="discount-badge">SAVE ₹240</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 3 mins</li>
+                        <li><i class="fas fa-check"></i> Motion graphics</li>
+                        <li><i class="fas fa-check"></i> Unlimited revisions</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- YOUTUBE -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>🎬 YOUTUBE</span></h2>
+            <p style="color: var(--pine-teal); margin-bottom: 10px;">LONG-FORM. CINEMATIC.</p>
+            <div class="pricing-scroll">
+                <div class="pricing-card">
+                    <div class="plan-name">BASIC</div>
+                    <div class="price-wrapper"><span class="price">₹800</span> <span class="original-price">₹1040</span> <span class="discount-badge">30%</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 10 mins</li>
+                        <li><i class="fas fa-check"></i> Cutting</li>
+                        <li><i class="fas fa-check"></i> Audio leveling</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+                <div class="pricing-card popular">
+                    <div class="popular-badge">🎯 RECOMMENDED</div>
+                    <div class="plan-name">STANDARD</div>
+                    <div class="price-wrapper"><span class="price">₹1500</span> <span class="original-price">₹1950</span> <span class="discount-badge">SAVE ₹450</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 15 mins</li>
+                        <li><i class="fas fa-check"></i> B-roll</li>
+                        <li><i class="fas fa-check"></i> Color grading</li>
+                        <li><i class="fas fa-check"></i> Thumbnail included</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+                <div class="pricing-card">
+                    <div class="plan-name">PREMIUM</div>
+                    <div class="price-wrapper"><span class="price">₹2500</span> <span class="original-price">₹3250</span> <span class="discount-badge">SAVE ₹750</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 20 mins</li>
+                        <li><i class="fas fa-check"></i> Custom animations</li>
+                        <li><i class="fas fa-check"></i> 3 thumbnails</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">GROW →</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- BULK DEALS -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>💰 BULK DEALS</span></h2>
+            <p style="color: var(--pine-teal); margin-bottom: 10px;">MORE = MORE SAVINGS</p>
+            <div class="bulk-grid">
+                <div class="bulk-card">
+                    <div class="bulk-quantity">5 REELS</div>
+                    <div class="bulk-price">₹1800</div>
+                    <div class="bulk-save">SAVE ₹200</div>
+                </div>
+                <div class="bulk-card">
+                    <div class="bulk-quantity">10 REELS</div>
+                    <div class="bulk-price">₹3200</div>
+                    <div class="bulk-save">SAVE ₹800</div>
+                </div>
+                <div class="bulk-card">
+                    <div class="bulk-quantity">5 YOUTUBE</div>
+                    <div class="bulk-price">₹11000</div>
+                    <div class="bulk-save">SAVE ₹1500</div>
+                </div>
+                <div class="bulk-card">
+                    <div class="bulk-quantity">20 THUMBS</div>
+                    <div class="bulk-price">₹1000</div>
+                    <div class="bulk-save">SAVE ₹400</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- MONTHLY PACKAGES -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>📅 MONTHLY</span></h2>
+            <p style="color: var(--pine-teal); margin-bottom: 10px;">SUBSCRIBE & GROW</p>
+            <div class="packages-scroll">
+                <div class="package-card">
+                    <div class="package-name">STARTER</div>
+                    <div class="package-price">₹2000<span style="font-size:1rem;">/mo</span></div>
+                    <div class="package-savings">SAVE ₹800/mo</div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 4 Reels</li>
+                        <li><i class="fas fa-check"></i> 2 Thumbnails</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">SUBSCRIBE</a>
+                </div>
+                <div class="package-card best-value">
+                    <div class="best-value-badge">🏆 BEST VALUE</div>
+                    <div class="package-name">CREATOR</div>
+                    <div class="package-price">₹5000<span style="font-size:1rem;">/mo</span></div>
+                    <div class="package-savings">SAVE ₹2500/mo</div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 10 Reels</li>
+                        <li><i class="fas fa-check"></i> 5 Thumbnails</li>
+                        <li><i class="fas fa-check"></i> 2 YouTube</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">SUBSCRIBE</a>
+                </div>
+                <div class="package-card">
+                    <div class="package-name">AGENCY</div>
+                    <div class="package-price">₹12000<span style="font-size:1rem;">/mo</span></div>
+                    <div class="package-savings">SAVE ₹6000/mo</div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 25 Reels</li>
+                        <li><i class="fas fa-check"></i> 15 Thumbnails</li>
+                        <li><i class="fas fa-check"></i> 5 YouTube</li>
+                    </ul>
+                    <a href="#" class="pricing-btn">SUBSCRIBE</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROCESS -->
+        <section style="margin: 40px 0">
+            <h2 class="section-title"><span>👉 PROCESS</span></h2>
+            <div class="process-grid">
+                <div class="process-step"><div class="step-number">1</div><h3>PICK</h3></div>
+                <div class="process-step"><div class="step-number">2</div><h3>SEND</h3></div>
+                <div class="process-step"><div class="step-number">3</div><h3>PREVIEW</h3></div>
+                <div class="process-step"><div class="step-number">4</div><h3>FINAL</h3></div>
+            </div>
+        </section>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="index.html" class="footer-logo"><img src="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png"> SHRED<span style="color: var(--mint-leaf);">FX</span></a>
+                <div class="footer-section">
+                    <h3>CONNECT</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#"><i class="far fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>NAV</h3>
+                    <ul>
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="portfolio.html">WORK</a></li>
+                        <li><a href="services.html">PRICING</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>CONTACT</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 77808...</li>
+                        <li><i class="far fa-envelope"></i> SHREDFX</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 SHREDFX - GROWING CREATORS SINCE 2024</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const toggle = document.getElementById('menuToggle');
+        const links = document.getElementById('navLinks');
+        toggle.addEventListener('click', () => links.classList.toggle('active'));
+    </script>
+</body>
+</html>
