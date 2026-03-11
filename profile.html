@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>Profile | ShredFX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --frosted-mint: #d8f3dcff;
+            --celadon: #b7e4c7ff;
+            --celadon-2: #95d5b2ff;
+            --mint-leaf: #74c69dff;
+            --mint-leaf-2: #52b788ff;
+            --sea-green: #40916cff;
+            --dark-emerald: #2d6a4fff;
+            --pine-teal: #1b4332ff;
+            --evergreen: #081c15ff;
+            --gradient: linear-gradient(135deg, var(--mint-leaf) 0%, var(--sea-green) 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+            line-height: 1.4;
+            font-size: 14px;
+            background: var(--frosted-mint);
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* NAVBAR (same as other pages) */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--mint-leaf);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--evergreen);
+            font-size: 24px;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .logo-img {
+            height: 40px;
+            filter: drop-shadow(0 2px 5px var(--mint-leaf));
+        }
+
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            gap: 15px;
+            border-top: 3px solid var(--mint-leaf);
+            box-shadow: var(--shadow);
+            z-index: 999;
+        }
+
+        .nav-links.active { display: flex; }
+
+        .nav-link {
+            color: var(--pine-teal);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--celadon);
+        }
+
+        .nav-link i { color: var(--sea-green); }
+
+        .nav-link.active {
+            color: var(--dark-emerald);
+            font-weight: 800;
+        }
+
+        .menu-toggle {
+            background: white;
+            border: 2px solid var(--mint-leaf);
+            color: var(--sea-green);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Account Menu Styles */
+        .account-menu {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .account-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+        }
+
+        .account-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: white;
+            min-width: 200px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid var(--mint-leaf);
+            z-index: 1001;
+        }
+
+        .account-dropdown.show { display: block; }
+
+        .account-dropdown a, .account-dropdown span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: var(--evergreen);
+            text-decoration: none;
+            border-bottom: 1px solid var(--celadon);
+        }
+
+        .account-dropdown a:hover { background: var(--frosted-mint); }
+        .account-dropdown i { color: var(--sea-green); width: 20px; }
+        #logoutBtn { cursor: pointer; }
+        .user-email { font-size: 0.85rem; color: var(--pine-teal); background: var(--frosted-mint); }
+
+        /* PROFILE MAIN */
+        .profile-main {
+            margin-top: 100px;
+            padding: 20px 0 50px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 32px;
+            padding: 40px;
+            border: 4px solid var(--mint-leaf);
+            box-shadow: var(--shadow-hover);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            background: var(--gradient);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            border: 4px solid white;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar i {
+            font-size: 50px;
+            color: white;
+        }
+
+        .profile-header h2 {
+            font-size: 2rem;
+            color: var(--dark-emerald);
+        }
+
+        .profile-header p {
+            color: var(--pine-teal);
+        }
+
+        .profile-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--dark-emerald);
+        }
+
+        .form-group input {
+            padding: 15px;
+            background: var(--frosted-mint);
+            border: 2px solid var(--celadon-2);
+            border-radius: 16px;
+            font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--sea-green);
+            background: white;
+        }
+
+        .form-group input[readonly] {
+            background: #f0f0f0;
+            border-color: #ddd;
+            color: #666;
+        }
+
+        .profile-stats {
+            background: var(--frosted-mint);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid var(--celadon);
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--celadon-2);
+        }
+
+        .stat-row:last-child {
+            border-bottom: none;
+        }
+
+        .stat-label {
+            color: var(--pine-teal);
+            font-weight: 600;
+        }
+
+        .stat-value {
+            color: var(--sea-green);
+            font-weight: 800;
+            font-size: 1.2rem;
+        }
+
+        .btn {
+            padding: 16px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--sea-green);
+            color: var(--sea-green);
+        }
+
+        .btn-danger {
+            background: #ff4757;
+        }
+
+        .message {
+            text-align: center;
+            padding: 12px;
+            border-radius: 12px;
+            display: none;
+        }
+
+        .message.success {
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+
+        .message.error {
+            background: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex !important;
+                flex-direction: row;
+                position: static;
+                background: transparent;
+                border: none;
+                padding: 0;
+                gap: 30px;
+            }
+            .nav-link {
+                border: none;
+                padding: 0;
+            }
+            .menu-toggle { display: none; }
+            .account-menu { width: auto; }
+        }
+
+        @media (max-width: 768px) {
+            .account-dropdown {
+                position: static;
+                margin-top: 10px;
+                width: 100%;
+            }
+            .account-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://ik.imagekit.io/5xwchyocd7/New%20Project%202%20_2B803B3_.png" class="logo-img">
+                <span>SHRED<span class="fx">FX</span></span>
+            </a>
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> HOME</a>
+                <a href="portfolio.html" class="nav-link"><i class="fas fa-play-circle"></i> WORK</a>
+                <a href="services.html" class="nav-link"><i class="fas fa-tags"></i> PRICING</a>
+                <a href="contact.html" class="nav-link"><i class="fas fa-phone-alt"></i> CONTACT</a>
+                <div class="account-menu" id="accountMenu"></div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="profile-main">
+        <div class="container">
+            <div class="profile-card">
+                <div class="profile-header">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user-edit"></i>
+                    </div>
+                    <h2 id="profileName">Loading...</h2>
+                    <p id="profileEmail">loading@email.com</p>
+                </div>
+
+                <div class="profile-stats" id="subscriptionStats">
+                    <h3 style="margin-bottom: 15px; color: var(--dark-emerald);">📊 Current Plan</h3>
+                    <div class="stat-row">
+                        <span class="stat-label">Plan</span>
+                        <span class="stat-value" id="statPlan">No active plan</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Edits Remaining</span>
+                        <span class="stat-value" id="statEditsLeft">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Edits Used</span>
+                        <span class="stat-value" id="statEditsUsed">0</span>
+                    </div>
+                    <div class="stat-row">
+                        <span class="stat-label">Status</span>
+                        <span class="stat-value" id="statStatus">Inactive</span>
+                    </div>
+                </div>
+
+                <form class="profile-form" id="profileForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="inputName" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="inputEmail" readonly>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone (optional)</label>
+                        <input type="tel" id="inputPhone" placeholder="+91 98765 43210">
+                    </div>
+                    
+                    <button type="submit" class="btn">SAVE CHANGES</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.location.href='dashboard.html'">← BACK TO DASHBOARD</button>
+                </form>
+
+                <div id="messageBox" class="message"></div>
+            </div>
+        </div>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        // Supabase setup
+        const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Menu toggle
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('navLinks');
+        menuToggle?.addEventListener('click', () => mobileNav.classList.toggle('active'));
+
+        // Account menu functions
+        window.toggleDropdown = () => document.getElementById('accountDropdown')?.classList.toggle('show');
+        
+        window.onclick = (event) => {
+            if (!event.target.closest('.account-menu')) {
+                document.getElementById('accountDropdown')?.classList.remove('show');
+            }
+        };
+
+        // Load user data
+        async function loadProfile() {
+            const { data: { user }, error } = await supabaseClient.auth.getUser();
+            
+            if (error || !user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // Display user info
+            document.getElementById('profileName').textContent = user.user_metadata?.full_name || 'User';
+            document.getElementById('profileEmail').textContent = user.email;
+            document.getElementById('inputName').value = user.user_metadata?.full_name || '';
+            document.getElementById('inputEmail').value = user.email;
+
+            // Load subscription data
+            const { data: sub } = await supabaseClient
+                .from('subscriptions')
+                .select('*')
+                .eq('user_id', user.id)
+                .maybeSingle();
+
+            if (sub) {
+                document.getElementById('statPlan').textContent = sub.plan_name || 'Custom Plan';
+                document.getElementById('statEditsLeft').textContent = sub.edits_remaining || 0;
+                document.getElementById('statEditsUsed').textContent = sub.edits_used || 0;
+                document.getElementById('statStatus').textContent = sub.status || 'Inactive';
+            }
+        }
+
+        // Update profile
+        document.getElementById('profileForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            const newName = document.getElementById('inputName').value;
+            const phone = document.getElementById('inputPhone').value;
+
+            const { error } = await supabaseClient.auth.updateUser({
+                data: { full_name: newName, phone: phone }
+            });
+
+            const msgBox = document.getElementById('messageBox');
+            if (error) {
+                msgBox.className = 'message error';
+                msgBox.textContent = error.message;
+            } else {
+                msgBox.className = 'message success';
+                msgBox.textContent = 'Profile updated successfully!';
+                document.getElementById('profileName').textContent = newName;
+            }
+        });
+
+        // Update account menu
+        async function updateAccountMenu(user) {
+            const menu = document.getElementById('accountMenu');
+            if (!menu) return;
+            
+            if (user) {
+                menu.innerHTML = `
+                    <div class="account-menu">
+                        <button class="account-btn" onclick="toggleDropdown()">
+                            <i class="fas fa-user-circle"></i> ${user.user_metadata?.full_name?.split(' ')[0] || 'Account'}
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="account-dropdown" id="accountDropdown">
+                            <span class="user-email"><i class="fas fa-envelope"></i> ${user.email}</span>
+                            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <span id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</span>
+                        </div>
+                    </div>
+                `;
+                document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+                    await supabaseClient.auth.signOut();
+                    window.location.reload();
+                });
+            } else {
+                menu.innerHTML = `<div class="account-menu"><a href="login.html" class="account-btn"><i class="fas fa-sign-in-alt"></i> LOGIN</a></div>`;
+            }
+        }
+
+        // Initialize
+        supabaseClient.auth.getUser().then(({ data: { user } }) => {
+            updateAccountMenu(user);
+            loadProfile();
+        });
+
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            updateAccountMenu(session?.user || null);
+            if (event === 'SIGNED_OUT') window.location.href = 'index.html';
+        });
+    </script>
+</body>
+</html>
