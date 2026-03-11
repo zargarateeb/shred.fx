@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>PRICING | ShredFX</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --frosted-mint: #d8f3dcff;
+            --celadon: #b7e4c7ff;
+            --celadon-2: #95d5b2ff;
+            --mint-leaf: #74c69dff;
+            --mint-leaf-2: #52b788ff;
+            --sea-green: #40916cff;
+            --dark-emerald: #2d6a4fff;
+            --pine-teal: #1b4332ff;
+            --evergreen: #081c15ff;
+            
+            --primary: var(--mint-leaf);
+            --primary-dark: var(--sea-green);
+            --primary-deep: var(--dark-emerald);
+            --bg-light: var(--frosted-mint);
+            --bg-soft: var(--celadon);
+            --bg-card: white;
+            --text: var(--evergreen);
+            --text-soft: var(--pine-teal);
+            --text-light: var(--dark-emerald);
+            --border: var(--celadon-2);
+            --shadow: 0 10px 30px rgba(29, 67, 50, 0.1);
+            --shadow-hover: 0 20px 40px rgba(82, 183, 136, 0.2);
+            --gradient: linear-gradient(135deg, var(--mint-leaf) 0%, var(--sea-green) 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--bg-light);
+            color: var(--text);
+            line-height: 1.4;
+            font-size: 14px;
+        }
+
+        .container {
+            width: 100%;
+            padding: 0 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Archivo Black', sans-serif;
+            letter-spacing: -0.5px;
+        }
+
+        .gradient-text {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .fx {
+            color: var(--sea-green);
+            font-weight: 800;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--mint-leaf);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            box-shadow: var(--shadow);
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: var(--evergreen);
+            font-size: 24px;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .logo-img {
+            height: 40px;
+            filter: drop-shadow(0 2px 5px var(--mint-leaf));
+        }
+
+        .nav-links {
+            display: none;
+            flex-direction: column;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            padding: 20px;
+            gap: 15px;
+            border-top: 3px solid var(--mint-leaf);
+            box-shadow: var(--shadow);
+            z-index: 999;
+        }
+
+        .nav-links.active { display: flex; }
+
+        .nav-link {
+            color: var(--pine-teal);
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid var(--celadon);
+        }
+
+        .nav-link i { color: var(--sea-green); }
+
+        .nav-link.active {
+            color: var(--dark-emerald);
+            font-weight: 800;
+        }
+
+        .menu-toggle {
+            background: white;
+            border: 2px solid var(--mint-leaf);
+            color: var(--sea-green);
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Account Menu Styles */
+        .account-menu {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+        }
+
+        .account-btn {
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: fit-content;
+        }
+
+        .account-btn i {
+            font-size: 1rem;
+        }
+
+        .account-dropdown {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 45px;
+            background: white;
+            min-width: 200px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 2px solid var(--mint-leaf);
+            z-index: 1001;
+        }
+
+        .account-dropdown.show {
+            display: block;
+        }
+
+        .account-dropdown a, .account-dropdown span {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 20px;
+            color: var(--evergreen);
+            text-decoration: none;
+            border-bottom: 1px solid var(--celadon);
+            font-size: 14px;
+        }
+
+        .account-dropdown a:last-child, .account-dropdown span:last-child {
+            border-bottom: none;
+        }
+
+        .account-dropdown a:hover {
+            background: var(--frosted-mint);
+        }
+
+        .account-dropdown i {
+            color: var(--sea-green);
+            width: 20px;
+        }
+
+        #logoutBtn {
+            cursor: pointer;
+        }
+
+        .user-email {
+            font-size: 0.85rem;
+            color: var(--pine-teal);
+            background: var(--frosted-mint);
+        }
+
+        /* HEADER */
+        .services-header {
+            padding: 120px 0 30px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--frosted-mint) 0%, var(--celadon) 100%);
+        }
+
+        .page-title { 
+            font-size: 3rem; 
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--evergreen);
+        }
+
+        .first-order-badge {
+            background: var(--gradient);
+            color: white;
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            display: inline-block;
+            border-radius: 50px;
+            box-shadow: var(--shadow-hover);
+            border: 3px solid white;
+        }
+
+        /* FLASH SALE */
+        .flash-sale {
+            background: linear-gradient(135deg, var(--mint-leaf-2) 0%, var(--sea-green) 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: var(--shadow);
+            border: 2px solid white;
+        }
+
+        /* PRICING SECTIONS */
+        .pricing-section {
+            padding: 50px 0;
+            border-bottom: 3px dashed var(--celadon-2);
+        }
+
+        .section-title { 
+            font-size: 2.4rem; 
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: var(--evergreen);
+        }
+
+        .section-title span {
+            color: var(--dark-emerald);
+            border-bottom: 4px solid var(--mint-leaf);
+            padding-bottom: 5px;
+        }
+
+        /* HORIZONTAL SCROLL CARDS */
+        .pricing-scroll {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 20px 0 30px;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .pricing-scroll::-webkit-scrollbar { display: none; }
+
+        .pricing-card {
+            flex: 0 0 280px;
+            background: white;
+            border-radius: 24px;
+            padding: 25px 20px;
+            box-shadow: var(--shadow);
+            border: 2px solid var(--celadon);
+            position: relative;
+        }
+
+        .pricing-card.popular {
+            border: 3px solid var(--sea-green);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--gradient);
+            color: white;
+            padding: 6px 20px;
+            font-weight: 800;
+            font-size: 0.8rem;
+            border-radius: 30px;
+            box-shadow: var(--shadow);
+        }
+
+        .plan-name { 
+            font-size: 1.6rem; 
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            color: var(--dark-emerald);
+        }
+
+        .price-wrapper {
+            background: var(--frosted-mint);
+            padding: 15px;
+            border-radius: 16px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px solid var(--mint-leaf);
+        }
+
+        .price { 
+            font-size: 2.5rem; 
+            color: var(--sea-green);
+            font-weight: 800;
+        }
+
+        .original-price {
+            text-decoration: line-through;
+            color: var(--pine-teal);
+            font-size: 1rem;
+        }
+
+        .discount-badge {
+            background: #ff4757;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            margin-left: 8px;
+        }
+
+        .features-list {
+            list-style: none;
+            margin: 20px 0;
+        }
+        .features-list li {
+            padding: 8px 0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--celadon);
+        }
+        .features-list li i { color: var(--sea-green); }
+
+        .pricing-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: var(--gradient);
+            color: white;
+            text-decoration: none;
+            font-weight: 800;
+            text-transform: uppercase;
+            text-align: center;
+            border-radius: 40px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(45, 106, 79, 0.3);
+        }
+
+        /* QR MODAL */
+        .qr-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .qr-modal.active {
+            display: flex;
+        }
+
+        .qr-modal-content {
+            background: white;
+            border-radius: 32px;
+            padding: 40px 30px;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+            border: 4px solid var(--mint-leaf);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .qr-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--pine-teal);
+        }
+
+        .qr-image {
+            width: auto; /* Let width adjust automatically */
+            height: 250px; /* Fixed height */
+            margin: 20px auto;
+            display: block;
+            border: 3px solid var(--celadon-2);
+            border-radius: 20px;
+          padding: 10px;
+        }
+
+        .qr-plan-name {
+            font-size: 1.5rem;
+            color: var(--dark-emerald);
+            margin-bottom: 5px;
+        }
+
+        .qr-price {
+            font-size: 2rem;
+            color: var(--sea-green);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .qr-upi-id {
+            background: var(--frosted-mint);
+            padding: 12px;
+            border-radius: 40px;
+            font-size: 1.1rem;
+            text-align: center;
+            margin: 15px 0;
+            border: 2px dashed var(--mint-leaf);
+            word-break: break-all;
+        }
+
+        .qr-note {
+            color: var(--pine-teal);
+            font-size: 0.85rem;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .qr-paid-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .qr-whatsapp-btn {
+            width: 100%;
+            padding: 12px;
+            background: #25D366;
+            color: white;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        /* FOOTER */
+        .footer {
+            background: var(--evergreen);
+            padding: 60px 0 30px;
+            color: white;
+            margin-top: 50px;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .footer-logo {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            color: white;
+            font-size: 1.5rem;
+            font-family: 'Archivo Black', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .footer-logo img { 
+            height: 40px;
+            filter: brightness(0) invert(1);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: var(--pine-teal);
+            border-radius: 12px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+
+        .footer-section h3 {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--mint-leaf);
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+            list-style: none;
+        }
+
+        .footer-section ul li a { 
+            color: var(--celadon); 
+            text-decoration: none;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 30px;
+            margin-top: 30px;
+            border-top: 1px solid var(--pine-teal);
+            color: var(--celadon);
+        }
+
+        /* WHATSAPP FLOAT */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            text-decoration: none;
+            z-index: 999;
+            box-shadow: 0 5px 20px rgba(37,211,102,0.3);
+            border: 3px solid white;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex !important;
+                flex-direction: row;
+                position: static;
+                background: transparent;
+                border: none;
+                padding: 0;
+                gap: 30px;
+            }
+            .nav-link {
+                border: none;
+                padding: 0;
+            }
+            .menu-toggle { display: none; }
+            .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; }
+            .footer-logo { grid-column: auto; }
+            .account-menu { width: auto; }
+        }
+
+        @media (max-width: 768px) {
+            .account-dropdown {
+                position: static;
+                margin-top: 10px;
+                width: 100%;
+            }
+            .account-btn {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="https://wa.me/917780870376" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <img src="https://ik.imagekit.io/5xwchyocd7/New%20Project%202%20_2B803B3_.png" class="logo-img">
+                <span>SHRED<span class="fx">FX</span></span>
+            </a>
+            <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html" class="nav-link"><i class="fas fa-home"></i> HOME</a>
+                <a href="portfolio.html" class="nav-link"><i class="fas fa-play-circle"></i> WORK</a>
+                <a href="services.html" class="nav-link active"><i class="fas fa-tags"></i> PRICING</a>
+                <a href="contact.html" class="nav-link"><i class="fas fa-phone-alt"></i> CONTACT</a>
+                <div class="account-menu" id="accountMenu"></div>
+            </div>
+        </div>
+    </nav>
+
+<!-- UPI Payment Modal -->
+<div class="qr-modal" id="qrModal">
+    <div class="qr-modal-content">
+        <button class="qr-close" onclick="closeQRModal()">&times;</button>
+        <h3 class="qr-plan-name" id="qrPlanName">Basic Reel</h3>
+        <div class="qr-price" id="qrPrice">₹200</div>
+        
+        <!-- QR Code Image -->
+        <img id="qrImage" class="qr-image" src="" alt="QR Code">
+        
+        <!-- UPI ID Display -->
+        <div class="qr-upi-id" id="qrUpiId">zargarateeb4@oksbi</div>
+        
+        <!-- Circular App Icons - 4 in a row -->
+        <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
+            <!-- Google Pay -->
+            <div onclick="payWithApp('googlepay')" style="width: 50px; height: 50px; background: #4285F4; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                <i class="fab fa-google-pay" style="color: white; font-size: 24px;"></i>
+            </div>
+            
+            <!-- PhonePe -->
+            <div onclick="payWithApp('phonepe')" style="width: 50px; height: 50px; background: #5F259F; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                <i class="fas fa-mobile-alt" style="color: white; font-size: 24px;"></i>
+            </div>
+            
+            <!-- Paytm -->
+            <div onclick="payWithApp('paytm')" style="width: 50px; height: 50px; background: #00BAF2; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                <i class="fa-brands fa-paypal" style="color: white; font-size: 24px;"></i>
+            </div>
+            
+            <!-- Copy UPI ID -->
+            <div onclick="copyUPI()" style="width: 50px; height: 50px; background: var(--sea-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
+                <i class="fa-regular fa-clipboard" style="color: white; font-size: 24px;"></i>
+            </div>
+        </div>
+        
+        <p class="qr-note" style="margin: 15px 0;">After payment, click below:</p>
+        
+        <!-- I HAVE PAID Button -->
+        <button class="qr-paid-btn" onclick="confirmPayment()" style="background: #25D366;">
+            ✅ I HAVE PAID
+        </button>
+        
+        <!-- Need Help Button -->
+        <button class="qr-whatsapp-btn" onclick="contactWhatsApp()" style="margin-top: 10px;">
+            <i class="fab fa-whatsapp"></i> Need Help?
+        </button>
+    </div>
+</div>
+
+    <section class="services-header">
+        <div class="container">
+            <h1 class="page-title">PRICING <span style="color: var(--sea-green);">🎬</span></h1>
+            <div class="first-order-badge">🎁 FIRST ORDER: 30% OFF + FREE THUMBNAIL</div>
+        </div>
+    </section>
+
+    <div class="container">
+        <!-- THUMBNAILS SECTION -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>🎨 THUMBNAILS</span></h2>
+            <div class="pricing-scroll">
+                <!-- Single -->
+                <div class="pricing-card">
+                    <div class="plan-name">SINGLE</div>
+                    <div class="price-wrapper"><span class="price">₹80</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Custom design</li>
+                        <li><i class="fas fa-check"></i> 1 revision</li>
+                        <li><i class="fas fa-check"></i> 12h delivery</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Single Thumbnail', 80, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Single-Thumbnail-(%E2%82%B980).png')">BUY NOW</button>
+                </div>
+
+                <!-- 5 Pack -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">🔥 BEST VALUE</div>
+                    <div class="plan-name">5 PACK</div>
+                    <div class="price-wrapper"><span class="price">₹350</span> <span class="original-price">₹400</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 5 thumbnails</li>
+                        <li><i class="fas fa-check"></i> 2 revisions each</li>
+                        <li><i class="fas fa-check"></i> Priority support</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('5 Pack Thumbnails', 350, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/5-Pack-Thumbnail-(%E2%82%B9350).png')">BUY NOW</button>
+                </div>
+
+                <!-- 10 Pack -->
+                <div class="pricing-card">
+                    <div class="plan-name">10 PACK</div>
+                    <div class="price-wrapper"><span class="price">₹600</span> <span class="original-price">₹800</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 10 thumbnails</li>
+                        <li><i class="fas fa-check"></i> 3 revisions</li>
+                        <li><i class="fas fa-check"></i> Source files</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('10 Pack Thumbnails', 600, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/10-Pack-Thumbnail-(%E2%82%B9600).png')">BUY NOW</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- REELS SECTION -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>📱 REELS / SHORTS</span></h2>
+            <div class="pricing-scroll">
+                <!-- Basic -->
+                <div class="pricing-card">
+                    <div class="plan-name">BASIC</div>
+                    <div class="price-wrapper"><span class="price">₹200</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 1 min</li>
+                        <li><i class="fas fa-check"></i> Basic cuts</li>
+                        <li><i class="fas fa-check"></i> Captions</li>
+                        <li><i class="fas fa-check"></i> 48h delivery</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Basic Reel', 200, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Basic-Reel-(%E2%82%B9200).png?updatedAt=1773228554433')">BUY NOW</button>
+                </div>
+
+                <!-- Standard -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">⚡ MOST POPULAR</div>
+                    <div class="plan-name">STANDARD</div>
+                    <div class="price-wrapper"><span class="price">₹400</span> <span class="original-price">₹520</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 2 mins</li>
+                        <li><i class="fas fa-check"></i> Color grading</li>
+                        <li><i class="fas fa-check"></i> Text animations</li>
+                        <li><i class="fas fa-check"></i> 36h delivery</li>
+                        <li><i class="fas fa-check"></i> 2 revisions</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Standard Reel', 400, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Standard-Reel-(%E2%82%B9400).png?updatedAt=1773224222109')">BUY NOW</button>
+                </div>
+
+                <!-- Premium -->
+                <div class="pricing-card">
+                    <div class="plan-name">PREMIUM</div>
+                    <div class="price-wrapper"><span class="price">₹800</span> <span class="original-price">₹1040</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 3 mins</li>
+                        <li><i class="fas fa-check"></i> Motion graphics</li>
+                        <li><i class="fas fa-check"></i> VFX</li>
+                        <li><i class="fas fa-check"></i> 24h delivery</li>
+                        <li><i class="fas fa-check"></i> Unlimited revisions</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Premium Reel', 800, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Premium-Reel-(%E2%82%B9800).png?updatedAt=1773228554445')">BUY NOW</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- YOUTUBE SECTION -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>🎬 YOUTUBE</span></h2>
+            <div class="pricing-scroll">
+                <!-- Basic -->
+                <div class="pricing-card">
+                    <div class="plan-name">BASIC</div>
+                    <div class="price-wrapper"><span class="price">₹800</span> <span class="original-price">₹1040</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 10 mins</li>
+                        <li><i class="fas fa-check"></i> Cutting</li>
+                        <li><i class="fas fa-check"></i> Audio leveling</li>
+                        <li><i class="fas fa-check"></i> 72h delivery</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Basic YouTube', 800, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Basic-YouTube-%20(%E2%82%B9800).png?updatedAt=1773228554150')">BUY NOW</button>
+                </div>
+
+                <!-- Standard -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">🎯 RECOMMENDED</div>
+                    <div class="plan-name">STANDARD</div>
+                    <div class="price-wrapper"><span class="price">₹1500</span> <span class="original-price">₹1950</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 15 mins</li>
+                        <li><i class="fas fa-check"></i> B-roll</li>
+                        <li><i class="fas fa-check"></i> Color grading</li>
+                        <li><i class="fas fa-check"></i> Thumbnail included</li>
+                        <li><i class="fas fa-check"></i> 48h delivery</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Standard YouTube', 1500, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Standard-YouTube-(%E2%82%B91500).png?updatedAt=1773228554451')">BUY NOW</button>
+                </div>
+
+                <!-- Premium -->
+                <div class="pricing-card">
+                    <div class="plan-name">PREMIUM</div>
+                    <div class="price-wrapper"><span class="price">₹2500</span> <span class="original-price">₹3250</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> Up to 20 mins</li>
+                        <li><i class="fas fa-check"></i> Custom animations</li>
+                        <li><i class="fas fa-check"></i> 3 thumbnails</li>
+                        <li><i class="fas fa-check"></i> 36h delivery</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Premium YouTube', 2500, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Premium-YouTube-(%E2%82%B92500).png?updatedAt=1773228554531')">BUY NOW</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- BULK DEALS SECTION -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>💰 BULK DEALS</span></h2>
+            <div class="pricing-scroll">
+                <!-- 5 Reels -->
+                <div class="pricing-card">
+                    <div class="plan-name">5 REELS</div>
+                    <div class="price-wrapper"><span class="price">₹1800</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 5 reels</li>
+                        <li><i class="fas fa-check"></i> Premium editing</li>
+                        <li><i class="fas fa-check"></i> Save ₹200</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('5 Reels Bulk', 1800, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/5-Reels-Bulk-(%E2%82%B91800).png?updatedAt=1773228554270')">BUY NOW</button>
+                </div>
+
+                <!-- 10 Reels -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">🔥 BEST VALUE</div>
+                    <div class="plan-name">10 REELS</div>
+                    <div class="price-wrapper"><span class="price">₹3200</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 10 reels</li>
+                        <li><i class="fas fa-check"></i> Premium editing</li>
+                        <li><i class="fas fa-check"></i> Save ₹800</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('10 Reels Bulk', 3200, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/10-Reels-Bulk-(%E2%82%B93200).png')">BUY NOW</button>
+                </div>
+
+                <!-- 5 YouTube -->
+                <div class="pricing-card">
+                    <div class="plan-name">5 YOUTUBE</div>
+                    <div class="price-wrapper"><span class="price">₹11,000</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 5 YouTube videos</li>
+                        <li><i class="fas fa-check"></i> Save ₹1500</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('5 YouTube Bulk', 11000, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/5-YouTube-Bulk-(%E2%82%B911,000).png?updatedAt=1773228553968')">BUY NOW</button>
+                </div>
+
+                <!-- 20 Thumbnails -->
+                <div class="pricing-card">
+                    <div class="plan-name">20 THUMBS</div>
+                    <div class="price-wrapper"><span class="price">₹1000</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 20 thumbnails</li>
+                        <li><i class="fas fa-check"></i> Save ₹400</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('20 Thumbnails Bulk', 1000, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/20-Thumbs-Bulk-(%E2%82%B91000).png?updatedAt=1773228554316')">BUY NOW</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- MONTHLY PACKAGES -->
+        <section class="pricing-section">
+            <h2 class="section-title"><span>📅 MONTHLY</span></h2>
+            <div class="pricing-scroll">
+                <!-- Starter -->
+                <div class="pricing-card">
+                    <div class="plan-name">STARTER</div>
+                    <div class="price-wrapper"><span class="price">₹2000</span><span style="font-size:0.9rem; color:var(--pine-teal);">/mo</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 4 Reels</li>
+                        <li><i class="fas fa-check"></i> 2 Thumbnails</li>
+                        <li><i class="fas fa-check"></i> 48h turnaround</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Monthly Starter', 2000, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Monthly-Starter-(%E2%82%B92000).png?updatedAt=1773228554122')">BUY NOW</button>
+                </div>
+
+                <!-- Creator -->
+                <div class="pricing-card popular">
+                    <div class="popular-badge">🏆 BEST VALUE</div>
+                    <div class="plan-name">CREATOR</div>
+                    <div class="price-wrapper"><span class="price">₹5000</span><span style="font-size:0.9rem; color:var(--pine-teal);">/mo</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 10 Reels</li>
+                        <li><i class="fas fa-check"></i> 5 Thumbnails</li>
+                        <li><i class="fas fa-check"></i> 2 YouTube</li>
+                        <li><i class="fas fa-check"></i> 24h priority</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Monthly Creator', 5000, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Monthly-Creator-(%E2%82%B95000).png?updatedAt=1773228553957')">BUY NOW</button>
+                </div>
+
+                <!-- Agency -->
+                <div class="pricing-card">
+                    <div class="plan-name">AGENCY</div>
+                    <div class="price-wrapper"><span class="price">₹12000</span><span style="font-size:0.9rem; color:var(--pine-teal);">/mo</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check"></i> 25 Reels</li>
+                        <li><i class="fas fa-check"></i> 15 Thumbnails</li>
+                        <li><i class="fas fa-check"></i> 5 YouTube</li>
+                        <li><i class="fas fa-check"></i> 12h delivery</li>
+                    </ul>
+                    <button class="pricing-btn" onclick="showQR('Monthly Agency', 12000, 'https://ik.imagekit.io/5xwchyocd7/ShredFX-QR-Codes/Monthly-Agency-(%E2%82%B912000).png?updatedAt=1773228553977')">BUY NOW</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <a href="index.html" class="footer-logo"><img src="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png"> SHRED<span style="color: var(--mint-leaf);">FX</span></a>
+                <div class="footer-section">
+                    <h3>CONNECT</h3>
+                    <div class="social-links">
+                        <a href="https://www.instagram.com/shredfx_"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/917780870376"><i class="fab fa-whatsapp"></i></a>
+                        <a href="mailto:edits.shredfx@gmail.com"><i class="far fa-envelope"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>NAV</h3>
+                    <ul>
+                        <li><a href="index.html">HOME</a></li>
+                        <li><a href="portfolio.html">WORK</a></li>
+                        <li><a href="services.html">PRICING</a></li>
+                        <li><a href="contact.html">CONTACT</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>CONTACT</h3>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 77808 70376</li>
+                        <li><i class="far fa-envelope"></i> edits.shredfx</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 SHREDFX - PROFESSIONAL VIDEO EDITING</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Mobile Menu Script -->
+    <script>
+        const menuToggle = document.getElementById('menuToggle');
+        const mobileNav = document.getElementById('navLinks');
+        
+        if (menuToggle) {
+            menuToggle.addEventListener('click', function() {
+                mobileNav.classList.toggle('active');
+            });
+        }
+
+        window.addEventListener('resize', function() {
+            if (window.innerWidth > 768 && mobileNav) {
+                mobileNav.classList.remove('active');
+            }
+        });
+    </script>
+
+    <!-- Supabase Integration -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+        const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
+        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
+        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+        // Account menu
+        function updateAccountMenu(user) {
+            const accountMenu = document.getElementById('accountMenu');
+            if (!accountMenu) return;
+            
+            if (user) {
+                accountMenu.innerHTML = `
+                    <div class="account-menu">
+                        <button class="account-btn" onclick="toggleDropdown()">
+                            <i class="fas fa-user-circle"></i> ${user.user_metadata?.full_name?.split(' ')[0] || 'Account'}
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="account-dropdown" id="accountDropdown">
+                            <span class="user-email"><i class="fas fa-envelope"></i> ${user.email}</span>
+                            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                            <span id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</span>
+                        </div>
+                    </div>
+                `;
+                
+                setTimeout(() => {
+                    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+                        await supabaseClient.auth.signOut();
+                        window.location.reload();
+                    });
+                }, 100);
+            } else {
+                accountMenu.innerHTML = `
+                    <div class="account-menu">
+                        <a href="login.html" class="account-btn">
+                            <i class="fas fa-sign-in-alt"></i> LOGIN
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        window.toggleDropdown = function() {
+            document.getElementById('accountDropdown')?.classList.toggle('show');
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.account-menu')) {
+                document.getElementById('accountDropdown')?.classList.remove('show');
+            }
+        }
+
+        supabaseClient.auth.getUser().then(({ data: { user } }) => {
+            updateAccountMenu(user);
+        });
+
+        supabaseClient.auth.onAuthStateChange((event, session) => {
+            updateAccountMenu(session?.user || null);
+        });
+
+        // UPI Payment Functions
+let currentPlan = null;
+let currentPrice = null;
+const UPI_ID = 'zargarateeb4@oksbi';
+
+window.showQR = function(planName, price, qrUrl) {
+    // Check if user is logged in
+    supabaseClient.auth.getUser().then(({ data: { user } }) => {
+        if (!user) {
+            alert('Please login first to purchase a plan');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        currentPlan = planName;
+        currentPrice = price;
+
+        document.getElementById('qrPlanName').textContent = planName;
+        document.getElementById('qrPrice').textContent = `₹${price.toLocaleString()}`;
+        document.getElementById('qrUpiId').textContent = 'zargarateeb4@oksbi';
+        document.getElementById('qrImage').src = qrUrl; // Set the QR code image
+        document.getElementById('qrModal').classList.add('active');
+    });
+};
+
+window.closeQRModal = function() {
+    document.getElementById('qrModal').classList.remove('active');
+};
+
+window.copyUPI = function() {
+    navigator.clipboard.writeText(UPI_ID);
+    alert('UPI ID copied! Open your UPI app and paste this ID.');
+};
+
+window.payWithApp = function(app) {
+    const amount = currentPrice;
+    const upiLink = `upi://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
+    
+    let appLink = '';
+    
+    switch(app) {
+        case 'googlepay':
+            appLink = `tez://upi/pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
+            break;
+        case 'phonepe':
+            appLink = `phonepe://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
+            break;
+        case 'paytm':
+            appLink = `paytmmp://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
+            break;
+        default:
+            appLink = upiLink;
+    }
+    
+    // Try to open app, fallback to web intent
+    window.location.href = appLink;
+    
+    // Fallback after 500ms
+    setTimeout(() => {
+        window.location.href = `https://pay.google.com/gp/w/u/0/home/send?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
+    }, 500);
+};
+
+window.confirmPayment = async function() {
+    const { data: { user } } = await supabaseClient.auth.getUser();
+    
+    if (!user || !currentPlan) {
+        alert('Error: Please try again');
+        closeQRModal();
+        return;
+    }
+
+    // Save order to Supabase
+    const { error } = await supabaseClient
+        .from('orders')
+        .insert([{
+            user_id: user.id,
+            user_email: user.email,
+            user_name: user.user_metadata?.full_name,
+            plan_name: currentPlan,
+            amount: currentPrice,
+            status: 'pending',
+            payment_method: 'UPI',
+            upi_id: UPI_ID,
+            created_at: new Date()
+        }]);
+
+    if (error) {
+        console.error('Order error:', error);
+        alert('Error creating order. Please contact support.');
+    } else {
+        // Send WhatsApp notification to you
+        const message = `🔔 NEW ORDER PENDING
+👤 User: ${user.user_metadata?.full_name || 'User'}
+📧 Email: ${user.email}
+📦 Plan: ${currentPlan}
+💰 Amount: ₹${currentPrice}
+⏱️ Time: ${new Date().toLocaleString()}
+UPI ID: ${UPI_ID}`;
+
+        window.open(`https://wa.me/917780870376?text=${encodeURIComponent(message)}`, '_blank');
+        
+        alert('✅ Payment confirmation sent! We will verify and activate your plan within 30 minutes.');
+    }
+
+    closeQRModal();
+};
+
+window.contactWhatsApp = function() {
+    window.open('https://wa.me/917780870376', '_blank');
+};
+    </script>
+</body>
+</html>
