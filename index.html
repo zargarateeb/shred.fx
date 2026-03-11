@@ -543,6 +543,85 @@
             .footer-content { grid-template-columns: 2fr 1fr 1fr 1fr; }
             .footer-logo { grid-column: auto; }
         }
+        /* Account Menu Styles */
+.account-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.account-btn {
+    background: var(--gradient);
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 40px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.account-btn i {
+    font-size: 1rem;
+}
+
+.account-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 45px;
+    background: white;
+    min-width: 200px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    border: 2px solid var(--mint-leaf);
+    z-index: 1000;
+}
+
+.account-dropdown.show {
+    display: block;
+}
+
+.account-dropdown a, .account-dropdown span {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 20px;
+    color: var(--evergreen);
+    text-decoration: none;
+    border-bottom: 1px solid var(--celadon);
+}
+
+.account-dropdown a:last-child, .account-dropdown span:last-child {
+    border-bottom: none;
+}
+
+.account-dropdown a:hover {
+    background: var(--frosted-mint);
+}
+
+.account-dropdown i {
+    color: var(--sea-green);
+    width: 20px;
+}
+
+#logoutBtn {
+    cursor: pointer;
+}
+
+.user-email {
+    font-size: 0.85rem;
+    color: var(--pine-teal);
+    background: var(--frosted-mint);
+}
+
+@media (max-width: 768px) {
+    .account-dropdown {
+        position: static;
+        margin-top: 10px;
+    }
+}
     </style>
 </head>
 <body>
@@ -555,12 +634,17 @@
                 <span>SHRED<span class="fx">FX</span></span>
             </a>
             <button class="menu-toggle" id="menuToggle"><i class="fa-solid fa-bars-staggered"></i></button>
-            <div class="nav-links" id="navLinks">
-                <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> HOME</a>
-                <a href="portfolio.html" class="nav-link"><i class="fas fa-play-circle"></i> WORK</a>
-                <a href="services.html" class="nav-link"><i class="fas fa-tags"></i> PRICING</a>
-                <a href="contact.html" class="nav-link"><i class="fas fa-phone-alt"></i> CONTACT</a>
-            </div>
+            <div class="nav-links">
+    <a href="index.html" class="nav-link"><i class="fas fa-home"></i> HOME</a>
+    <a href="portfolio.html" class="nav-link"><i class="fas fa-play-circle"></i> WORK</a>
+    <a href="services.html" class="nav-link"><i class="fas fa-tags"></i> PRICING</a>
+    <a href="contact.html" class="nav-link"><i class="fas fa-phone-alt"></i> CONTACT</a>
+    
+    <!-- Account Menu - Shows different options based on login status -->
+    <div class="account-menu" id="accountMenu">
+        <!-- This will be populated by JavaScript -->
+    </div>
+</div>
         </div>
     </nav>
 
@@ -695,5 +779,73 @@
         const links = document.getElementById('navLinks');
         toggle.addEventListener('click', () => links.classList.toggle('active'));
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+    // Initialize Supabase (use same credentials)
+    const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // Account menu HTML
+    function updateAccountMenu(user) {
+        const accountMenu = document.getElementById('accountMenu');
+        
+        if (user) {
+            // User is logged in
+            accountMenu.innerHTML = `
+                <div class="account-menu">
+                    <button class="account-btn" onclick="toggleDropdown()">
+                        <i class="fas fa-user-circle"></i> ${user.user_metadata?.full_name?.split(' ')[0] || 'Account'}
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="account-dropdown" id="accountDropdown">
+                        <span class="user-email"><i class="fas fa-envelope"></i> ${user.email}</span>
+                        <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <span id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</span>
+                    </div>
+                </div>
+            `;
+            
+            // Add logout functionality
+            document.getElementById('logoutBtn').addEventListener('click', async () => {
+                await supabaseClient.auth.signOut();
+                window.location.reload();
+            });
+        } else {
+            // User is not logged in
+            accountMenu.innerHTML = `
+                <div class="account-menu">
+                    <a href="login.html" class="account-btn">
+                        <i class="fas fa-sign-in-alt"></i> LOGIN
+                    </a>
+                </div>
+            `;
+        }
+    }
+
+    // Toggle dropdown
+    window.toggleDropdown = function() {
+        document.getElementById('accountDropdown').classList.toggle('show');
+    }
+
+    // Close dropdown when clicking outside
+    window.onclick = function(event) {
+        if (!event.target.closest('.account-menu')) {
+            const dropdown = document.getElementById('accountDropdown');
+            if (dropdown) dropdown.classList.remove('show');
+        }
+    }
+
+    // Check user on page load
+    supabaseClient.auth.getUser().then(({ data: { user } }) => {
+        updateAccountMenu(user);
+    });
+
+    // Listen for auth changes
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        updateAccountMenu(session?.user || null);
+    });
+</script>
 </body>
 </html>
