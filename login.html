@@ -243,11 +243,7 @@
             </div>
         </div>
     </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
     // Initialize Supabase
     const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
@@ -292,7 +288,9 @@
         });
 
         // Login
-        loginBtn.addEventListener('click', async function() {
+        loginBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+            
             const email = document.getElementById('loginEmail').value;
             const password = document.getElementById('loginPassword').value;
             
@@ -323,8 +321,10 @@
             }
         });
 
-        // Signup
-        signupBtn.addEventListener('click', async function() {
+        // Signup - WITH SUCCESS MESSAGE
+        signupBtn.addEventListener('click', async function(e) {
+            e.preventDefault(); // Stop page refresh
+            
             const name = document.getElementById('signupName').value;
             const email = document.getElementById('signupEmail').value;
             const password = document.getElementById('signupPassword').value;
@@ -359,18 +359,19 @@
                 signupBtn.textContent = 'Create Account';
                 showMessage(error.message, 'error');
             } else {
-                showMessage('✓ Account created! Please check your email to confirm.', 'success');
-                
                 // Clear form
                 document.getElementById('signupName').value = '';
                 document.getElementById('signupEmail').value = '';
                 document.getElementById('signupPassword').value = '';
                 
+                // Show BIG success message
+                showMessage('✅ ACCOUNT CREATED SUCCESSFULLY! Please check your email to confirm your account.', 'success');
+                
                 // Re-enable button
                 signupBtn.disabled = false;
                 signupBtn.textContent = 'Create Account';
                 
-                // Switch to login tab after 3 seconds
+                // Auto switch to login tab after 3 seconds
                 setTimeout(() => {
                     loginTab.click();
                     showMessage('You can now login with your credentials', 'success');
