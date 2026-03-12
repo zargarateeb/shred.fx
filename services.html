@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <!-- Supabase client library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             margin: 0;
@@ -38,6 +40,12 @@
             --shadow: 0 10px 30px rgba(29, 67, 50, 0.1);
             --shadow-hover: 0 20px 40px rgba(82, 183, 136, 0.2);
             --gradient: linear-gradient(135deg, var(--mint-leaf) 0%, var(--sea-green) 100%);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -176,6 +184,12 @@
             align-items: center;
             gap: 8px;
             width: fit-content;
+            transition: transform 0.2s;
+        }
+
+        .account-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
         }
 
         .account-btn i {
@@ -257,6 +271,13 @@
             border-radius: 50px;
             box-shadow: var(--shadow-hover);
             border: 3px solid white;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
         }
 
         /* FLASH SALE */
@@ -309,6 +330,12 @@
             box-shadow: var(--shadow);
             border: 2px solid var(--celadon);
             position: relative;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
         }
 
         .pricing-card.popular {
@@ -395,6 +422,12 @@
             border: none;
             cursor: pointer;
             box-shadow: 0 5px 15px rgba(45, 106, 79, 0.3);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .pricing-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 106, 79, 0.4);
         }
 
         /* QR MODAL */
@@ -410,6 +443,7 @@
             align-items: center;
             justify-content: center;
             padding: 20px;
+            backdrop-filter: blur(5px);
         }
 
         .qr-modal.active {
@@ -425,6 +459,12 @@
             position: relative;
             border: 4px solid var(--mint-leaf);
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            animation: modalSlideIn 0.3s;
+        }
+
+        @keyframes modalSlideIn {
+            from { transform: translateY(-50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
         }
 
         .qr-close {
@@ -436,16 +476,21 @@
             font-size: 28px;
             cursor: pointer;
             color: var(--pine-teal);
+            transition: color 0.2s;
+        }
+
+        .qr-close:hover {
+            color: var(--sea-green);
         }
 
         .qr-image {
-            width: auto; /* Let width adjust automatically */
-            height: 250px; /* Fixed height */
+            width: auto;
+            height: 250px;
             margin: 20px auto;
             display: block;
             border: 3px solid var(--celadon-2);
             border-radius: 20px;
-          padding: 10px;
+            padding: 10px;
         }
 
         .qr-plan-name {
@@ -482,7 +527,7 @@
         .qr-paid-btn {
             width: 100%;
             padding: 16px;
-            background: var(--gradient);
+            background: #25D366;
             color: white;
             border: none;
             border-radius: 40px;
@@ -490,12 +535,18 @@
             font-size: 1rem;
             cursor: pointer;
             margin: 10px 0;
+            transition: transform 0.2s;
+        }
+
+        .qr-paid-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
         }
 
         .qr-whatsapp-btn {
             width: 100%;
             padding: 12px;
-            background: #25D366;
+            background: #128C7E;
             color: white;
             border: none;
             border-radius: 40px;
@@ -505,7 +556,35 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
+            transition: transform 0.2s;
         }
+
+        .qr-whatsapp-btn:hover {
+            transform: translateY(-2px);
+            background: #075E54;
+        }
+
+        /* App Icons */
+        .app-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+
+        .app-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .app-icon.googlepay { background: #4285F4; }
+        .app-icon.phonepe { background: #5F259F; }
+        .app-icon.paytm { background: #00BAF2; }
+        .app-icon.copy { background: var(--sea-green); }
 
         /* FOOTER */
         .footer {
@@ -554,6 +633,12 @@
             color: white;
             text-decoration: none;
             font-size: 1.2rem;
+            transition: transform 0.2s;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-3px);
+            background: var(--sea-green);
         }
 
         .footer-section h3 {
@@ -570,6 +655,11 @@
         .footer-section ul li a { 
             color: var(--celadon); 
             text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-section ul li a:hover {
+            color: white;
         }
 
         .footer-bottom {
@@ -598,6 +688,33 @@
             z-index: 999;
             box-shadow: 0 5px 20px rgba(37,211,102,0.3);
             border: 3px solid white;
+            transition: transform 0.2s;
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--evergreen);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            z-index: 3000;
+            display: none;
+            animation: slideUp 0.3s;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        @keyframes slideUp {
+            from { transform: translate(-50%, 100%); opacity: 0; }
+            to { transform: translate(-50%, 0); opacity: 1; }
         }
 
         @media (min-width: 768px) {
@@ -653,55 +770,58 @@
         </div>
     </nav>
 
-<!-- UPI Payment Modal -->
-<div class="qr-modal" id="qrModal">
-    <div class="qr-modal-content">
-        <button class="qr-close" onclick="closeQRModal()">&times;</button>
-        <h3 class="qr-plan-name" id="qrPlanName">Basic Reel</h3>
-        <div class="qr-price" id="qrPrice">₹200</div>
-        
-        <!-- QR Code Image -->
-        <img id="qrImage" class="qr-image" src="" alt="QR Code">
-        
-        <!-- UPI ID Display -->
-        <div class="qr-upi-id" id="qrUpiId">zargarateeb4@oksbi</div>
-        
-        <!-- Circular App Icons - 4 in a row -->
-        <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
-            <!-- Google Pay -->
-            <div onclick="payWithApp('googlepay')" style="width: 50px; height: 50px; background: #4285F4; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                <i class="fab fa-google-pay" style="color: white; font-size: 24px;"></i>
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <!-- UPI Payment Modal -->
+    <div class="qr-modal" id="qrModal">
+        <div class="qr-modal-content">
+            <button class="qr-close" onclick="closeQRModal()">&times;</button>
+            <h3 class="qr-plan-name" id="qrPlanName">Basic Reel</h3>
+            <div class="qr-price" id="qrPrice">₹200</div>
+            
+            <!-- QR Code Image -->
+            <img id="qrImage" class="qr-image" src="" alt="QR Code">
+            
+            <!-- UPI ID Display -->
+            <div class="qr-upi-id" id="qrUpiId">zargarateeb4@oksbi</div>
+            
+            <!-- Circular App Icons - 4 in a row -->
+            <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
+                <!-- Google Pay -->
+                <div class="app-icon googlepay" onclick="payWithApp('googlepay')">
+                    <i class="fab fa-google-pay" style="color: white; font-size: 24px;"></i>
+                </div>
+                
+                <!-- PhonePe -->
+                <div class="app-icon phonepe" onclick="payWithApp('phonepe')">
+                    <i class="fas fa-mobile-alt" style="color: white; font-size: 24px;"></i>
+                </div>
+                
+                <!-- Paytm -->
+                <div class="app-icon paytm" onclick="payWithApp('paytm')">
+                    <i class="fa-brands fa-paypal" style="color: white; font-size: 24px;"></i>
+                </div>
+                
+                <!-- Copy UPI ID -->
+                <div class="app-icon copy" onclick="copyUPI(event)">
+                    <i class="fa-regular fa-clipboard" style="color: white; font-size: 24px;"></i>
+                </div>
             </div>
             
-            <!-- PhonePe -->
-            <div onclick="payWithApp('phonepe')" style="width: 50px; height: 50px; background: #5F259F; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                <i class="fas fa-mobile-alt" style="color: white; font-size: 24px;"></i>
-            </div>
+            <p class="qr-note" style="margin: 15px 0;">After payment, click below:</p>
             
-            <!-- Paytm -->
-            <div onclick="payWithApp('paytm')" style="width: 50px; height: 50px; background: #00BAF2; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                <i class="fa-brands fa-paypal" style="color: white; font-size: 24px;"></i>
-            </div>
+            <!-- I HAVE PAID Button -->
+            <button class="qr-paid-btn" onclick="confirmPayment()">
+                <i class="fas fa-check-circle"></i> ✅ I HAVE PAID
+            </button>
             
-            <!-- Copy UPI ID -->
-            <div onclick="copyUPI()" style="width: 50px; height: 50px; background: var(--sea-green); border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">
-                <i class="fa-regular fa-clipboard" style="color: white; font-size: 24px;"></i>
-            </div>
+            <!-- Need Help Button -->
+            <button class="qr-whatsapp-btn" onclick="contactWhatsApp()" style="margin-top: 10px;">
+                <i class="fab fa-whatsapp"></i> Need Help?
+            </button>
         </div>
-        
-        <p class="qr-note" style="margin: 15px 0;">After payment, click below:</p>
-        
-        <!-- I HAVE PAID Button -->
-        <button class="qr-paid-btn" onclick="confirmPayment()" style="background: #25D366;">
-            ✅ I HAVE PAID
-        </button>
-        
-        <!-- Need Help Button -->
-        <button class="qr-whatsapp-btn" onclick="contactWhatsApp()" style="margin-top: 10px;">
-            <i class="fab fa-whatsapp"></i> Need Help?
-        </button>
     </div>
-</div>
 
     <section class="services-header">
         <div class="container">
@@ -956,8 +1076,8 @@
                 <div class="footer-section">
                     <h3>CONNECT</h3>
                     <div class="social-links">
-                        <a href="https://www.instagram.com/shredfx_"><i class="fab fa-instagram"></i></a>
-                        <a href="https://wa.me/917780870376"><i class="fab fa-whatsapp"></i></a>
+                        <a href="https://www.instagram.com/shredfx_" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://wa.me/917780870376" target="_blank"><i class="fab fa-whatsapp"></i></a>
                         <a href="mailto:edits.shredfx@gmail.com"><i class="far fa-envelope"></i></a>
                     </div>
                 </div>
@@ -1000,16 +1120,37 @@
                 mobileNav.classList.remove('active');
             }
         });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (window.innerWidth <= 768) {
+                if (!event.target.closest('.nav-container') && mobileNav.classList.contains('active')) {
+                    mobileNav.classList.remove('active');
+                }
+            }
+        });
     </script>
 
-    <!-- Supabase Integration -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <!-- UPI Payment Functions -->
     <script>
+        // Initialize Supabase
         const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
         const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
         const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Account menu
+        // Toast notification function
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.background = type === 'success' ? 'var(--evergreen)' : '#dc3545';
+            toast.style.display = 'block';
+            
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 3000);
+        }
+
+        // Account menu HTML
         function updateAccountMenu(user) {
             const accountMenu = document.getElementById('accountMenu');
             if (!accountMenu) return;
@@ -1049,133 +1190,200 @@
 
         window.toggleDropdown = function() {
             document.getElementById('accountDropdown')?.classList.toggle('show');
-        }
+        };
 
         window.onclick = function(event) {
             if (!event.target.closest('.account-menu')) {
                 document.getElementById('accountDropdown')?.classList.remove('show');
             }
-        }
+        };
 
+        // Check user on page load
         supabaseClient.auth.getUser().then(({ data: { user } }) => {
             updateAccountMenu(user);
         });
 
+        // Listen for auth changes
         supabaseClient.auth.onAuthStateChange((event, session) => {
             updateAccountMenu(session?.user || null);
         });
 
-        // UPI Payment Functions
-let currentPlan = null;
-let currentPrice = null;
-const UPI_ID = 'zargarateeb4@oksbi';
+        // UPI Payment Variables
+        let currentPlan = null;
+        let currentPrice = null;
+        const UPI_ID = 'zargarateeb4@oksbi';
+        const PAYEE_NAME = 'ShredFX';
 
-window.showQR = function(planName, price, qrUrl) {
-    // Check if user is logged in
-    supabaseClient.auth.getUser().then(({ data: { user } }) => {
-        if (!user) {
-            alert('Please login first to purchase a plan');
-            window.location.href = 'login.html';
-            return;
-        }
+        // Show QR Modal
+        window.showQR = function(planName, price, qrUrl) {
+            // Check if user is logged in
+            supabaseClient.auth.getUser().then(({ data: { user } }) => {
+                if (!user) {
+                    showToast('Please login first to purchase a plan', 'error');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 2000);
+                    return;
+                }
 
-        currentPlan = planName;
-        currentPrice = price;
+                currentPlan = planName;
+                currentPrice = price;
 
-        document.getElementById('qrPlanName').textContent = planName;
-        document.getElementById('qrPrice').textContent = `₹${price.toLocaleString()}`;
-        document.getElementById('qrUpiId').textContent = 'zargarateeb4@oksbi';
-        document.getElementById('qrImage').src = qrUrl; // Set the QR code image
-        document.getElementById('qrModal').classList.add('active');
-    });
-};
+                document.getElementById('qrPlanName').textContent = planName;
+                document.getElementById('qrPrice').textContent = `₹${price.toLocaleString()}`;
+                document.getElementById('qrUpiId').textContent = UPI_ID;
+                document.getElementById('qrImage').src = qrUrl;
+                document.getElementById('qrModal').classList.add('active');
+            });
+        };
 
-window.closeQRModal = function() {
-    document.getElementById('qrModal').classList.remove('active');
-};
+        // Close QR Modal
+        window.closeQRModal = function() {
+            document.getElementById('qrModal').classList.remove('active');
+        };
 
-window.copyUPI = function() {
-    navigator.clipboard.writeText(UPI_ID);
-    alert('UPI ID copied! Open your UPI app and paste this ID.');
-};
+        // Enhanced copy function with visual feedback
+        window.copyUPI = function(event) {
+            navigator.clipboard.writeText(UPI_ID).then(() => {
+                const copyBtn = event.currentTarget;
+                const originalHTML = copyBtn.innerHTML;
+                
+                // Show success feedback
+                copyBtn.innerHTML = '<i class="fas fa-check" style="color: white; font-size: 24px;"></i>';
+                copyBtn.style.background = '#28a745';
+                
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fa-regular fa-clipboard" style="color: white; font-size: 24px;"></i>';
+                    copyBtn.style.background = 'var(--sea-green)';
+                }, 2000);
+                
+                showToast('UPI ID copied to clipboard!');
+            }).catch(() => {
+                showToast('Failed to copy. Please copy manually: ' + UPI_ID, 'error');
+            });
+        };
 
-window.payWithApp = function(app) {
-    const amount = currentPrice;
-    const upiLink = `upi://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
-    
-    let appLink = '';
-    
-    switch(app) {
-        case 'googlepay':
-            appLink = `tez://upi/pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
-            break;
-        case 'phonepe':
-            appLink = `phonepe://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
-            break;
-        case 'paytm':
-            appLink = `paytmmp://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
-            break;
-        default:
-            appLink = upiLink;
-    }
-    
-    // Try to open app, fallback to web intent
-    window.location.href = appLink;
-    
-    // Fallback after 500ms
-    setTimeout(() => {
-        window.location.href = `https://pay.google.com/gp/w/u/0/home/send?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR`;
-    }, 500);
-};
+        // Fixed payWithApp function with proper UPI deep links
+        window.payWithApp = function(app) {
+            const amount = currentPrice;
+            const upiId = UPI_ID;
+            const payeeName = PAYEE_NAME;
+            const currency = "INR";
+            const note = encodeURIComponent(currentPlan);
+            
+            // Properly encode the UPAI intent URL
+            let upiIntentUrl = '';
+            
+            switch(app) {
+                case 'googlepay':
+                    // Correct Google Pay intent format with all parameters
+                    upiIntentUrl = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
+                    break;
+                case 'phonepe':
+                    upiIntentUrl = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
+                    break;
+                case 'paytm':
+                    upiIntentUrl = `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
+                    break;
+                default:
+                    upiIntentUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
+            }
+            
+            // Try to open the app
+            window.location.href = upiIntentUrl;
+            
+            // Improved fallback - show message if app doesn't open
+            setTimeout(() => {
+                if (document.hasFocus()) {
+                    const useFallback = confirm("App didn't open. Would you like to pay via web browser?");
+                    if (useFallback) {
+                        // Google Pay web URL as fallback
+                        window.open(`https://pay.google.com/gp/w/u/0/home/send?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}`, '_blank');
+                    }
+                }
+            }, 1000);
+        };
 
-window.confirmPayment = async function() {
-    const { data: { user } } = await supabaseClient.auth.getUser();
-    
-    if (!user || !currentPlan) {
-        alert('Error: Please try again');
-        closeQRModal();
-        return;
-    }
+        // Confirm Payment with enhanced WhatsApp message
+        window.confirmPayment = async function() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            
+            if (!user || !currentPlan) {
+                showToast('Error: Please try again', 'error');
+                closeQRModal();
+                return;
+            }
 
-    // Save order to Supabase
-    const { error } = await supabaseClient
-        .from('orders')
-        .insert([{
-            user_id: user.id,
-            user_email: user.email,
-            user_name: user.user_metadata?.full_name,
-            plan_name: currentPlan,
-            amount: currentPrice,
-            status: 'pending',
-            payment_method: 'UPI',
-            upi_id: UPI_ID,
-            created_at: new Date()
-        }]);
+            // Save order to Supabase
+            const { data: order, error } = await supabaseClient
+                .from('orders')
+                .insert([{
+                    user_id: user.id,
+                    user_email: user.email,
+                    user_name: user.user_metadata?.full_name,
+                    plan_name: currentPlan,
+                    amount: currentPrice,
+                    status: 'pending',
+                    payment_method: 'UPI',
+                    upi_id: UPI_ID,
+                    created_at: new Date()
+                }])
+                .select()
+                .single();
 
-    if (error) {
-        console.error('Order error:', error);
-        alert('Error creating order. Please contact support.');
-    } else {
-        // Send WhatsApp notification to you
-        const message = `🔔 NEW ORDER PENDING
-👤 User: ${user.user_metadata?.full_name || 'User'}
+            if (error) {
+                console.error('Order error:', error);
+                showToast('Error creating order. Please contact support.', 'error');
+            } else {
+                // Formatted WhatsApp message with emojis and clear formatting
+                const message = `🔔 *NEW ORDER RECEIVED* 🔔
+
+━━━━━━━━━━━━━━━━━━━
+📋 *ORDER DETAILS*
+━━━━━━━━━━━━━━━━━━━
+🆔 Order ID: ${order.id.slice(0,8)}...
+👤 Customer: ${user.user_metadata?.full_name || 'User'}
 📧 Email: ${user.email}
 📦 Plan: ${currentPlan}
 💰 Amount: ₹${currentPrice}
-⏱️ Time: ${new Date().toLocaleString()}
-UPI ID: ${UPI_ID}`;
+⏱️ Time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
+💳 UPI: ${UPI_ID}
 
-        window.open(`https://wa.me/917780870376?text=${encodeURIComponent(message)}`, '_blank');
-        
-        alert('✅ Payment confirmation sent! We will verify and activate your plan within 30 minutes.');
-    }
+━━━━━━━━━━━━━━━━━━━
+✅ *Actions Required:*
+1. Verify payment in your UPI app
+2. Activate plan via admin panel
+3. Notify customer
 
-    closeQRModal();
-};
+━━━━━━━━━━━━━━━━━━━
+🔗 Admin Panel: https://zargarateeb.github.io/shred.fx/admin.html`;
 
-window.contactWhatsApp = function() {
-    window.open('https://wa.me/917780870376', '_blank');
-};
+                window.open(`https://wa.me/917780870376?text=${encodeURIComponent(message)}`, '_blank');
+                
+                showToast('✅ Order placed! You will receive confirmation within 30 minutes.');
+            }
+
+            closeQRModal();
+        };
+
+        // Contact WhatsApp
+        window.contactWhatsApp = function() {
+            window.open('https://wa.me/917780870376', '_blank');
+        };
+
+        // Close modal when clicking outside
+        document.getElementById('qrModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeQRModal();
+            }
+        });
+
+        // Prevent body scroll when modal is open
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && document.getElementById('qrModal').classList.contains('active')) {
+                closeQRModal();
+            }
+        });
     </script>
 </body>
 </html>
