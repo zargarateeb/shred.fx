@@ -42,12 +42,6 @@
             --gradient: linear-gradient(135deg, var(--mint-leaf) 0%, var(--sea-green) 100%);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Poppins', sans-serif;
             background: var(--bg-light);
@@ -784,22 +778,22 @@
             <img id="qrImage" class="qr-image" src="" alt="QR Code">
             
             <!-- UPI ID Display -->
-            <div class="qr-upi-id" id="qrUpiId">zargarateeb4@oksbi</div>
+            <div class="qr-upi-id" id="qrUpiId">zargarateeb4@okaxis</div>
             
             <!-- Circular App Icons - 4 in a row -->
             <div style="display: flex; justify-content: center; gap: 15px; margin: 20px 0;">
                 <!-- Google Pay -->
-                <div class="app-icon googlepay" onclick="payWithApp('googlepay')">
+                <div class="app-icon googlepay" onclick="payWithApp()">
                     <i class="fab fa-google-pay" style="color: white; font-size: 24px;"></i>
                 </div>
                 
                 <!-- PhonePe -->
-                <div class="app-icon phonepe" onclick="payWithApp('phonepe')">
+                <div class="app-icon phonepe" onclick="payWithApp()">
                     <i class="fas fa-mobile-alt" style="color: white; font-size: 24px;"></i>
                 </div>
                 
                 <!-- Paytm -->
-                <div class="app-icon paytm" onclick="payWithApp('paytm')">
+                <div class="app-icon paytm" onclick="payWithApp()">
                     <i class="fa-brands fa-paypal" style="color: white; font-size: 24px;"></i>
                 </div>
                 
@@ -1211,8 +1205,10 @@
         // UPI Payment Variables
         let currentPlan = null;
         let currentPrice = null;
-        const UPI_ID = 'zargarateeb4@oksbi';
-        const PAYEE_NAME = 'ShredFX';
+        // CORRECT UPI ID - using okaxis (Axis Bank) which works
+        const UPI_ID = 'zargarateeb4@okaxis';
+        const PAYEE_NAME = 'Zargar Ateeb';
+        const UPI_AID = 'uGICAgMCu_5ukZA';
 
         // Show QR Modal
         window.showQR = function(planName, price, qrUrl) {
@@ -1263,45 +1259,23 @@
             });
         };
 
-        // Fixed payWithApp function with proper UPI deep links
-        window.payWithApp = function(app) {
-            const amount = currentPrice;
-            const upiId = UPI_ID;
-            const payeeName = PAYEE_NAME;
-            const currency = "INR";
-            const note = encodeURIComponent(currentPlan);
-            
-            // Properly encode the UPAI intent URL
-            let upiIntentUrl = '';
-            
-            switch(app) {
-                case 'googlepay':
-                    // Correct Google Pay intent format with all parameters
-                    upiIntentUrl = `upi://pay?pa=zargarateeb4@okaxis&pn=Zargar%20Ateeb&am=80.00&cu=INR&aid=uGICAgMCu_5ukZA`;
-                    break;
-                case 'phonepe':
-                    upiIntentUrl = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
-                    break;
-                case 'paytm':
-                    upiIntentUrl = `paytmmp://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
-                    break;
-                default:
-                    upiIntentUrl = `upi://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
+        // Fixed payWithApp function using the WORKING UPI link format
+        window.payWithApp = function() {
+            if (!currentPrice) {
+                showToast('Please select a plan first', 'error');
+                return;
             }
+
+            // Format amount with 2 decimal places
+            const formattedAmount = currentPrice.toFixed(2);
             
-            // Try to open the app
-            window.location.href = upiIntentUrl;
+            // Use the EXACT working format provided
+            const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${formattedAmount}&cu=INR&aid=${UPI_AID}`;
             
-            // Improved fallback - show message if app doesn't open
-            setTimeout(() => {
-                if (document.hasFocus()) {
-                    const useFallback = confirm("App didn't open. Would you like to pay via web browser?");
-                    if (useFallback) {
-                        // Google Pay web URL as fallback
-                        window.open(`https://pay.google.com/gp/w/u/0/home/send?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}`, '_blank');
-                    }
-                }
-            }, 1000);
+            // Open the UPI link
+            window.location.href = upiLink;
+            
+            showToast('Opening UPI app...');
         };
 
         // Confirm Payment with enhanced WhatsApp message
@@ -1335,7 +1309,7 @@
                 console.error('Order error:', error);
                 showToast('Error creating order. Please contact support.', 'error');
             } else {
-                // Formatted WhatsApp message with emojis and clear formatting
+                // Formatted WhatsApp message
                 const message = `🔔 *NEW ORDER RECEIVED* 🔔
 
 ━━━━━━━━━━━━━━━━━━━
@@ -1360,7 +1334,7 @@
 
                 window.open(`https://wa.me/917780870376?text=${encodeURIComponent(message)}`, '_blank');
                 
-                showToast('✅ Order placed! You will receive confirmation within 30 minutes.');
+                showToast('✅ Order placed! We will verify and activate within 30 minutes.');
             }
 
             closeQRModal();
