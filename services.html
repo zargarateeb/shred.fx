@@ -1079,7 +1079,7 @@
                     <h3>NAV</h3>
                     <ul>
                         <li><a href="index.html">HOME</a></li>
-                        <li><a href="portfolio.html">WORK</a></li>
+                        <li><a href="portlio.html">WORK</a></li>
                         <li><a href="services.html">PRICING</a></li>
                         <li><a href="contact.html">CONTACT</a></li>
                     </ul>
@@ -1125,239 +1125,217 @@
         });
     </script>
 
-    <!-- UPI Payment Functions -->
-    <script>
-        // Initialize Supabase
-        const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
-        const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+    <!-- UPI Payment Functions - SIMPLE MANUAL VERSION -->
+<script>
+    // Initialize Supabase
+    const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 
-        // Toast notification function
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.background = type === 'success' ? 'var(--evergreen)' : '#dc3545';
-            toast.style.display = 'block';
+    // Account menu variables
+    let currentPlan = null;
+    let currentPrice = null;
+    const UPI_ID = 'zargarateeb4@oksbi';
+
+    // Account menu functions
+    window.toggleDropdown = function() {
+        document.getElementById('accountDropdown')?.classList.toggle('show');
+    };
+
+    window.onclick = function(event) {
+        if (!event.target.closest('.account-menu')) {
+            document.getElementById('accountDropdown')?.classList.remove('show');
+        }
+    };
+
+    // Update account menu based on login status
+    async function updateAccountMenu(user) {
+        const accountMenu = document.getElementById('accountMenu');
+        if (!accountMenu) return;
+        
+        if (user) {
+            accountMenu.innerHTML = `
+                <div class="account-menu">
+                    <button class="account-btn" onclick="toggleDropdown()">
+                        <i class="fas fa-user-circle"></i> ${user.user_metadata?.full_name?.split(' ')[0] || 'Account'}
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="account-dropdown" id="accountDropdown">
+                        <span class="user-email"><i class="fas fa-envelope"></i> ${user.email}</span>
+                        <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+                        <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
+                        <span id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</span>
+                    </div>
+                </div>
+            `;
             
             setTimeout(() => {
-                toast.style.display = 'none';
-            }, 3000);
+                document.getElementById('logoutBtn')?.addEventListener('click', async () => {
+                    await supabaseClient.auth.signOut();
+                    window.location.reload();
+                });
+            }, 100);
+        } else {
+            accountMenu.innerHTML = `
+                <div class="account-menu">
+                    <a href="login.html" class="account-btn">
+                        <i class="fas fa-sign-in-alt"></i> LOGIN
+                    </a>
+                </div>
+            `;
         }
+    }
 
-        // Account menu HTML
-        function updateAccountMenu(user) {
-            const accountMenu = document.getElementById('accountMenu');
-            if (!accountMenu) return;
-            
-            if (user) {
-                accountMenu.innerHTML = `
-                    <div class="account-menu">
-                        <button class="account-btn" onclick="toggleDropdown()">
-                            <i class="fas fa-user-circle"></i> ${user.user_metadata?.full_name?.split(' ')[0] || 'Account'}
-                            <i class="fas fa-chevron-down"></i>
-                        </button>
-                        <div class="account-dropdown" id="accountDropdown">
-                            <span class="user-email"><i class="fas fa-envelope"></i> ${user.email}</span>
-                            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
-                            <a href="profile.html"><i class="fas fa-user"></i> Profile</a>
-                            <span id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</span>
-                        </div>
-                    </div>
-                `;
-                
-                setTimeout(() => {
-                    document.getElementById('logoutBtn')?.addEventListener('click', async () => {
-                        await supabaseClient.auth.signOut();
-                        window.location.reload();
-                    });
-                }, 100);
-            } else {
-                accountMenu.innerHTML = `
-                    <div class="account-menu">
-                        <a href="login.html" class="account-btn">
-                            <i class="fas fa-sign-in-alt"></i> LOGIN
-                        </a>
-                    </div>
-                `;
-            }
-        }
+    // Check user on page load
+    supabaseClient.auth.getUser().then(({ data: { user } }) => {
+        updateAccountMenu(user);
+    });
 
-        window.toggleDropdown = function() {
-            document.getElementById('accountDropdown')?.classList.toggle('show');
-        };
+    // Listen for auth changes
+    supabaseClient.auth.onAuthStateChange((event, session) => {
+        updateAccountMenu(session?.user || null);
+    });
 
-        window.onclick = function(event) {
-            if (!event.target.closest('.account-menu')) {
-                document.getElementById('accountDropdown')?.classList.remove('show');
-            }
-        };
-
-        // Check user on page load
+    // Show QR Modal
+    window.showQR = function(planName, price, qrUrl) {
+        // Check if user is logged in
         supabaseClient.auth.getUser().then(({ data: { user } }) => {
-            updateAccountMenu(user);
-        });
-
-        // Listen for auth changes
-        supabaseClient.auth.onAuthStateChange((event, session) => {
-            updateAccountMenu(session?.user || null);
-        });
-
-        // UPI Payment Variables
-        let currentPlan = null;
-        let currentPrice = null;
-        // CORRECT UPI ID - using okaxis (Axis Bank) which works
-        const UPI_ID = 'zargarateeb4@okaxis';
-        const PAYEE_NAME = 'Zargar Ateeb';
-        const UPI_AID = 'uGICAgMCu_5ukZA';
-
-        // Show QR Modal
-        window.showQR = function(planName, price, qrUrl) {
-            // Check if user is logged in
-            supabaseClient.auth.getUser().then(({ data: { user } }) => {
-                if (!user) {
-                    showToast('Please login first to purchase a plan', 'error');
-                    setTimeout(() => {
-                        window.location.href = 'login.html';
-                    }, 2000);
-                    return;
-                }
-
-                currentPlan = planName;
-                currentPrice = price;
-
-                document.getElementById('qrPlanName').textContent = planName;
-                document.getElementById('qrPrice').textContent = `₹${price.toLocaleString()}`;
-                document.getElementById('qrUpiId').textContent = UPI_ID;
-                document.getElementById('qrImage').src = qrUrl;
-                document.getElementById('qrModal').classList.add('active');
-            });
-        };
-
-        // Close QR Modal
-        window.closeQRModal = function() {
-            document.getElementById('qrModal').classList.remove('active');
-        };
-
-        // Enhanced copy function with visual feedback
-        window.copyUPI = function(event) {
-            navigator.clipboard.writeText(UPI_ID).then(() => {
-                const copyBtn = event.currentTarget;
-                const originalHTML = copyBtn.innerHTML;
-                
-                // Show success feedback
-                copyBtn.innerHTML = '<i class="fas fa-check" style="color: white; font-size: 24px;"></i>';
-                copyBtn.style.background = '#28a745';
-                
-                setTimeout(() => {
-                    copyBtn.innerHTML = '<i class="fa-regular fa-clipboard" style="color: white; font-size: 24px;"></i>';
-                    copyBtn.style.background = 'var(--sea-green)';
-                }, 2000);
-                
-                showToast('UPI ID copied to clipboard!');
-            }).catch(() => {
-                showToast('Failed to copy. Please copy manually: ' + UPI_ID, 'error');
-            });
-        };
-
-        // Fixed payWithApp function using the WORKING UPI link format
-        window.payWithApp = function() {
-            if (!currentPrice) {
-                showToast('Please select a plan first', 'error');
+            if (!user) {
+                alert('Please login first to purchase a plan');
+                window.location.href = 'login.html';
                 return;
             }
 
-            // Format amount with 2 decimal places
-            const formattedAmount = currentPrice.toFixed(2);
-            
-            // Use the EXACT working format provided
-            const upiLink = `upi://pay?pa=${UPI_ID}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${formattedAmount}&cu=INR&aid=${UPI_AID}`;
-            
-            // Open the UPI link
-            window.location.href = upiLink;
-            
-            showToast('Opening UPI app...');
-        };
+            currentPlan = planName;
+            currentPrice = price;
 
-        // Confirm Payment with enhanced WhatsApp message
-        window.confirmPayment = async function() {
-            const { data: { user } } = await supabaseClient.auth.getUser();
-            
-            if (!user || !currentPlan) {
-                showToast('Error: Please try again', 'error');
-                closeQRModal();
-                return;
-            }
+            document.getElementById('qrPlanName').textContent = planName;
+            document.getElementById('qrPrice').textContent = `₹${price.toLocaleString()}`;
+            document.getElementById('qrUpiId').textContent = UPI_ID;
+            document.getElementById('qrImage').src = qrUrl;
+            document.getElementById('qrModal').classList.add('active');
+        });
+    };
 
-            // Save order to Supabase
-            const { data: order, error } = await supabaseClient
-                .from('orders')
-                .insert([{
-                    user_id: user.id,
-                    user_email: user.email,
-                    user_name: user.user_metadata?.full_name,
-                    plan_name: currentPlan,
-                    amount: currentPrice,
-                    status: 'pending',
-                    payment_method: 'UPI',
-                    upi_id: UPI_ID,
-                    created_at: new Date()
-                }])
-                .select()
-                .single();
+    // Close QR Modal
+    window.closeQRModal = function() {
+        document.getElementById('qrModal').classList.remove('active');
+    };
 
-            if (error) {
-                console.error('Order error:', error);
-                showToast('Error creating order. Please contact support.', 'error');
-            } else {
-                // Formatted WhatsApp message
-                const message = `🔔 *NEW ORDER RECEIVED* 🔔
+    // Copy UPI ID
+    window.copyUPI = function() {
+        navigator.clipboard.writeText(UPI_ID);
+        alert('✅ UPI ID copied to clipboard!');
+    };
 
-━━━━━━━━━━━━━━━━━━━
-📋 *ORDER DETAILS*
-━━━━━━━━━━━━━━━━━━━
-🆔 Order ID: ${order.id.slice(0,8)}...
-👤 Customer: ${user.user_metadata?.full_name || 'User'}
+    // Pay with UPI App
+    window.payWithApp = function(app) {
+        const amount = currentPrice;
+        
+        let upiLink = '';
+        
+        switch(app) {
+            case 'googlepay':
+                upiLink = `tez://upi/pay?pa=${UPI_ID}&am=${amount}&cu=INR`;
+                break;
+            case 'phonepe':
+                upiLink = `phonepe://pay?pa=${UPI_ID}&am=${amount}&cu=INR`;
+                break;
+            case 'paytm':
+                upiLink = `paytmmp://pay?pa=${UPI_ID}&am=${amount}&cu=INR`;
+                break;
+            default:
+                upiLink = `upi://pay?pa=${UPI_ID}&am=${amount}&cu=INR`;
+        }
+        
+        // Try to open app
+        window.location.href = upiLink;
+        
+        // Fallback after 800ms
+        setTimeout(() => {
+            window.open(`https://pay.google.com/gp/w/u/0/home/send?pa=${UPI_ID}&am=${amount}&cu=INR`, '_blank');
+        }, 800);
+    };
+
+    // SIMPLE MANUAL PAYMENT CONFIRMATION
+    window.confirmPayment = async function() {
+        const { data: { user } } = await supabaseClient.auth.getUser();
+        
+        if (!user) {
+            alert('Please login first');
+            window.location.href = 'login.html';
+            return;
+        }
+        
+        if (!currentPlan || !currentPrice) {
+            alert('Please select a plan first');
+            closeQRModal();
+            return;
+        }
+        
+        // Ask for confirmation
+        const userConfirmed = confirm(`✅ Have you successfully paid ₹${currentPrice} for ${currentPlan}?\n\nClick OK only if you have made the payment.`);
+        
+        if (!userConfirmed) {
+            return; // User cancelled
+        }
+        
+        // Show loading state
+        const confirmBtn = document.querySelector('.qr-paid-btn');
+        const originalText = confirmBtn.textContent;
+        confirmBtn.textContent = 'PROCESSING...';
+        confirmBtn.disabled = true;
+        
+        // Save order to database
+        const { error: orderError } = await supabaseClient
+            .from('orders')
+            .insert([{
+                user_id: user.id,
+                user_email: user.email,
+                user_name: user.user_metadata?.full_name || 'User',
+                plan_name: currentPlan,
+                amount: currentPrice,
+                status: 'pending',
+                payment_method: 'UPI',
+                upi_id: UPI_ID,
+                created_at: new Date()
+            }]);
+
+        if (orderError) {
+            console.error('Order error:', orderError);
+            alert('Error placing order. Please contact support.');
+            confirmBtn.textContent = originalText;
+            confirmBtn.disabled = false;
+            return;
+        }
+
+        // Send WhatsApp notification to you
+        const message = `🔔 NEW ORDER PENDING
+👤 User: ${user.user_metadata?.full_name || 'User'}
 📧 Email: ${user.email}
 📦 Plan: ${currentPlan}
 💰 Amount: ₹${currentPrice}
-⏱️ Time: ${new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })}
-💳 UPI: ${UPI_ID}
+⏱️ Time: ${new Date().toLocaleString()}`;
 
-━━━━━━━━━━━━━━━━━━━
-✅ *Actions Required:*
-1. Verify payment in your UPI app
-2. Activate plan via admin panel
-3. Notify customer
+        window.open(`https://wa.me/917780870376?text=${encodeURIComponent(message)}`, '_blank');
+        
+        alert('✅ Order placed successfully! We will verify your payment and activate your plan within 30 minutes.\n\nYou will receive a confirmation on WhatsApp.');
+        
+        // Close modal and reset
+        closeQRModal();
+        confirmBtn.textContent = originalText;
+        confirmBtn.disabled = false;
+        
+        // Redirect to dashboard
+        setTimeout(() => {
+            window.location.href = 'dashboard.html';
+        }, 2000);
+    };
 
-━━━━━━━━━━━━━━━━━━━
-🔗 Admin Panel: https://zargarateeb.github.io/shred.fx/admin.html`;
-
-                window.open(`https://wa.me/917780870376?text=${encodeURIComponent(message)}`, '_blank');
-                
-                showToast('✅ Order placed! We will verify and activate within 30 minutes.');
-            }
-
-            closeQRModal();
-        };
-
-        // Contact WhatsApp
-        window.contactWhatsApp = function() {
-            window.open('https://wa.me/917780870376', '_blank');
-        };
-
-        // Close modal when clicking outside
-        document.getElementById('qrModal').addEventListener('click', function(e) {
-            if (e.target === this) {
-                closeQRModal();
-            }
-        });
-
-        // Prevent body scroll when modal is open
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape' && document.getElementById('qrModal').classList.contains('active')) {
-                closeQRModal();
-            }
-        });
-    </script>
+    // Contact WhatsApp
+    window.contactWhatsApp = function() {
+        window.open('https://wa.me/917780870376', '_blank');
+    };
+</script>
 </body>
 </html>
