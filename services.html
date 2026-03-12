@@ -1277,7 +1277,7 @@
             switch(app) {
                 case 'googlepay':
                     // Correct Google Pay intent format with all parameters
-                    upiIntentUrl = `tez://upi/pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
+                    upiIntentUrl = `upi://pay?pa=zargarateeb4@okaxis&pn=Zargar%20Ateeb&am=80.00&cu=INR&aid=uGICAgMCu_5ukZA`;
                     break;
                 case 'phonepe':
                     upiIntentUrl = `phonepe://pay?pa=${upiId}&pn=${encodeURIComponent(payeeName)}&am=${amount}&cu=${currency}&tn=${note}`;
