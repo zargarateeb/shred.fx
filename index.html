@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ShredFX | High-Retention Video Editing</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --neon-mint: #52b788;
+            --deep-forest: #1b4332;
+            --pine: #2d6a4f;
+            --frost: #d8f3dc;
+            --charcoal: #081c15;
+            --white: #ffffff;
+            --off-white: #f4faf6;
+            --border-glow: rgba(82, 183, 136, 0.25);
+            --shadow-sm: 0 8px 20px rgba(0,0,0,0.05);
+            --shadow-md: 0 12px 28px rgba(0,0,0,0.08);
+            --gradient-primary: linear-gradient(135deg, #52b788 0%, #2d6a4f 100%);
+            --gradient-dark: linear-gradient(135deg, #1b4332 0%, #081c15 100%);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--charcoal);
+            line-height: 1.5;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--border-glow);
+            z-index: 1000;
+            padding: 0 24px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: var(--charcoal);
+        }
+
+        .logo img {
+            height: 38px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+
+        .logo span {
+            color: var(--neon-mint);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--deep-forest);
+            transition: color 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover {
+            color: var(--neon-mint);
+        }
+
+        .nav-cta {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(82,183,136,0.3);
+            transition: transform 0.15s;
+        }
+
+        .nav-cta:active { transform: scale(0.96); }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            color: var(--deep-forest);
+            cursor: pointer;
+        }
+
+        /* ===== HERO SECTION ===== */
+        .hero {
+            min-height: 100vh;
+            background: var(--charcoal);
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 120px 0 80px;
+            overflow: hidden;
+        }
+
+        .hero-bg-pattern {
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 40%, rgba(82,183,136,0.12) 2%, transparent 2.5%);
+            background-size: 48px 48px;
+            pointer-events: none;
+        }
+
+        .hero-grid {
+            position: absolute;
+            right: 0;
+            top: 20%;
+            width: 45%;
+            height: 70%;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .hero-grid div {
+            background: var(--neon-mint);
+            border-radius: 20px;
+            aspect-ratio: 9/16;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 620px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(82,183,136,0.12);
+            border: 1px solid rgba(82,183,136,0.3);
+            padding: 6px 16px;
+            border-radius: 100px;
+            color: var(--neon-mint);
+            font-weight: 600;
+            font-size: 0.8rem;
+            margin-bottom: 24px;
+        }
+
+        .hero-badge span {
+            width: 8px;
+            height: 8px;
+            background: var(--neon-mint);
+            border-radius: 50%;
+            display: inline-block;
+            animation: pulse 1.8s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1);}
+            50% { opacity: 0.4; transform: scale(0.9);}
+        }
+
+        .hero h1 {
+            font-size: clamp(2.6rem, 8vw, 4.8rem);
+            color: white;
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .hero h1 em {
+            font-style: normal;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero-desc {
+            color: rgba(255,255,255,0.65);
+            font-size: 1.05rem;
+            margin-bottom: 32px;
+            max-width: 480px;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 48px;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 24px rgba(82,183,136,0.35);
+            transition: transform 0.15s;
+        }
+
+        .btn-secondary {
+            background: rgba(255,255,255,0.06);
+            border: 1.5px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:active, .btn-secondary:active { transform: scale(0.97); }
+
+        .trust-badge {
+            display: flex;
+            gap: 28px;
+            flex-wrap: wrap;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 28px;
+        }
+
+        .trust-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.5);
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+
+        .trust-item i { color: var(--neon-mint); font-size: 1rem; }
+
+        /* ===== SECTION STYLES ===== */
+        section {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            display: inline-block;
+            background: var(--frost);
+            color: var(--pine);
+            padding: 5px 14px;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 5vw, 2.8rem);
+            margin-bottom: 12px;
+            color: var(--charcoal);
+        }
+
+        .section-sub {
+            color: #5a7a69;
+            font-size: 1rem;
+            margin-bottom: 40px;
+            max-width: 560px;
+        }
+
+        /* ===== HORIZONTAL REEL GRID - SMALLER CARDS IN A ROW ===== */
+        .reel-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .reel-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--border-glow);
+            transition: all 0.25s ease;
+            cursor: pointer;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .reel-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: rgba(82,183,136,0.5);
+        }
+
+        .reel-card:active {
+            transform: scale(0.97);
+        }
+
+        /* Smaller thumbnail area */
+        .reel-thumb {
+            aspect-ratio: 9/16;
+            background: var(--deep-forest);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .reel-thumb iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            pointer-events: none;
+        }
+
+        .reel-overlay {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.75);
+            backdrop-filter: blur(4px);
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: white;
+            letter-spacing: 0.3px;
+        }
+
+        /* Compact info section */
+        .reel-info {
+            padding: 12px 12px 14px;
+        }
+
+        .reel-info h3 {
+            font-size: 0.85rem;
+            margin-bottom: 4px;
+            font-weight: 800;
+            font-family: 'Syne', sans-serif;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .reel-info p {
+            font-size: 0.7rem;
+            color: #6c7e74;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* value props */
+        .value-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .value-card {
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            border: 1px solid var(--border-glow);
+            transition: 0.2s;
+        }
+
+        .value-icon {
+            width: 56px;
+            height: 56px;
+            background: var(--frost);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            color: var(--pine);
+        }
+
+        .value-text h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .value-text p {
+            color: #4a5c53;
+            font-size: 0.9rem;
+        }
+
+        /* process steps */
+        .steps-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 18px;
+            align-items: flex-start;
+        }
+
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h3 {
+            font-size: 1.2rem;
+            margin-bottom: 4px;
+        }
+
+        .step-content p {
+            color: #5a6b62;
+            font-size: 0.9rem;
+        }
+
+        /* CTA section */
+        .cta-block {
+            background: var(--gradient-dark);
+            border-radius: 40px;
+            padding: 56px 32px;
+            text-align: center;
+            color: white;
+        }
+
+        .cta-block h2 {
+            font-size: clamp(1.8rem, 5vw, 2.6rem);
+            margin-bottom: 12px;
+        }
+
+        .cta-block p {
+            opacity: 0.8;
+            margin-bottom: 28px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .btn-wa {
+            background: #25D366;
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-ig {
+            background: linear-gradient(135deg, #f58529, #dd2a7b);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* footer */
+        .footer {
+            background: var(--charcoal);
+            color: rgba(255,255,255,0.6);
+            padding: 60px 0 30px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+            margin-bottom: 48px;
+        }
+
+        .footer-logo-area .logo {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-icons a {
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+
+        .footer-links-column h4 {
+            color: white;
+            margin-bottom: 18px;
+            font-size: 1rem;
+        }
+
+        .footer-links-column a {
+            display: block;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            font-size: 0.75rem;
+        }
+
+        /* sticky bottom */
+        .sticky-bottom {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(8,28,21,0.96);
+            backdrop-filter: blur(12px);
+            display: flex;
+            gap: 12px;
+            padding: 12px 20px;
+            z-index: 100;
+            border-top: 1px solid rgba(82,183,136,0.3);
+        }
+        .sticky-bottom a {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            border-radius: 40px;
+            font-weight: 700;
+            text-decoration: none;
+            font-size: 0.85rem;
+        }
+        .sticky-primary {
+            background: var(--gradient-primary);
+            color: white;
+        }
+        .sticky-secondary {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+        }
+        body {
+            padding-bottom: 70px;
+        }
+
+        /* ===== RESPONSIVE: Horizontal row adapts for tablets/mobile ===== */
+        @media (max-width: 1024px) {
+            .reel-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+            .reel-info h3 {
+                font-size: 0.8rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 32px;
+                gap: 24px;
+                transition: left 0.3s ease;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+                z-index: 999;
+            }
+            .nav-links.open {
+                left: 0;
+            }
+            /* For mobile: horizontal scrollable row instead of stacking */
+            .reel-grid {
+                display: flex;
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 16px;
+                padding-bottom: 12px;
+                margin-bottom: 8px;
+            }
+            .reel-card {
+                flex: 0 0 240px;
+                scroll-snap-align: start;
+            }
+            .reel-thumb {
+                aspect-ratio: 9/16;
+            }
+            .hero-grid {
+                display: none;
+            }
+            .value-card {
+                flex-direction: column;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .steps-container {
+                gap: 24px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .reel-card {
+                flex: 0 0 210px;
+            }
+            .reel-info h3 {
+                font-size: 0.75rem;
+            }
+            .reel-info p {
+                font-size: 0.65rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .value-grid {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 24px;
+            }
+            .steps-container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 32px;
+            }
+            .step-item {
+                flex-direction: column;
+                text-align: center;
+                align-items: center;
+            }
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+        }
+
+        .dark-bg {
+            background: var(--frost);
+        }
+        
+        /* custom scrollbar for horizontal reel row on mobile */
+        .reel-grid::-webkit-scrollbar {
+            height: 4px;
+        }
+        .reel-grid::-webkit-scrollbar-track {
+            background: #e0e7e3;
+            border-radius: 10px;
+        }
+        .reel-grid::-webkit-scrollbar-thumb {
+            background: var(--neon-mint);
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            SHRED<span>FX</span>
+        </a>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="services.html" class="nav-link">Services</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+            <a href="https://wa.me/918494043654" class="nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Free Sample</a>
+        </div>
+    </div>
+</nav>
+
+<main>
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-grid">
+            <div></div><div></div><div></div>
+            <div></div><div></div><div></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-badge"><span></span> #1 Retention Editing</div>
+                <h1>Stop Scrolling. <em>Start Growing.</em></h1>
+                <p class="hero-desc">High-retention reel edits that hook viewers in 3 seconds. Subtitles, fast cuts & viral pacing — built for Instagram Reels, YouTube Shorts & TikTok.</p>
+                <div class="hero-buttons">
+                    <a href="https://wa.me/918494043654" class="btn-primary" target="_blank"><i class="fab fa-whatsapp"></i> Get Free Sample</a>
+                    <a href="#portfolio" class="btn-secondary"><i class="fas fa-play"></i> Watch Edits</a>
+                </div>
+                <div class="trust-badge">
+                    <div class="trust-item"><i class="fas fa-bolt"></i> 48h Turnaround</div>
+                    <div class="trust-item"><i class="fas fa-chart-line"></i> Retention Optimized</div>
+                    <div class="trust-item"><i class="fas fa-captions"></i> Premium Subtitles</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio preview - HORIZONTAL ROW with SMALLER CARDS -->
+    <section id="portfolio">
+        <div class="container">
+            <span class="section-label">✦ Featured Work</span>
+            <h2 class="section-title">Edits That <em style="color:var(--neon-mint)">Convert</em></h2>
+            <p class="section-sub">Watch how we transform raw footage into high-performing short-form content.</p>
+            <div class="reel-grid">
+                <!-- Card 1: Gym Motivation Reel (smaller & compact) -->
+                <div class="reel-card" onclick="window.open('https://www.youtube.com/watch?v=-QdJbB6eTaI','_blank')">
+                    <div class="reel-thumb">
+                        <iframe src="https://www.youtube.com/embed/-QdJbB6eTaI" loading="lazy" title="Gym Reel"></iframe>
+                        <div class="reel-overlay">⚡ Hook + Transitions</div>
+                    </div>
+                    <div class="reel-info">
+                        <h3>Gym Motivation Reel</h3>
+                        <p>Hardcore sync & energy cuts</p>
+                    </div>
+                </div>
+                <!-- Card 2: Business Ad Edit -->
+                <div class="reel-card" onclick="window.open('https://www.youtube.com/watch?v=GXPDDCnIx1M','_blank')">
+                    <div class="reel-thumb">
+                        <iframe src="https://www.youtube.com/embed/GXPDDCnIx1M" loading="lazy" title="Business Ad"></iframe>
+                        <div class="reel-overlay">🎯 Cinematic</div>
+                    </div>
+                    <div class="reel-info">
+                        <h3>Business Ad Edit</h3>
+                        <p>Brand storytelling</p>
+                    </div>
+                </div>
+                <!-- Card 3: Facts Channel Short -->
+                <div class="reel-card" onclick="window.open('https://www.youtube.com/watch?v=UJL89ZG16Ew','_blank')">
+                    <div class="reel-thumb">
+                        <iframe src="https://www.youtube.com/embed/UJL89ZG16Ew" loading="lazy" title="Facts Short"></iframe>
+                        <div class="reel-overlay">📊 Motion Graphics</div>
+                    </div>
+                    <div class="reel-info">
+                        <h3>Facts Channel Short</h3>
+                        <p>Retention-focused pacing</p>
+                    </div>
+                </div>
+                <!-- Card 4: Brand Promo Reel -->
+                <div class="reel-card" onclick="window.open('https://www.youtube.com/watch?v=zqdxZBeQ0d8','_blank')">
+                    <div class="reel-thumb">
+                        <iframe src="https://www.youtube.com/embed/zqdxZBeQ0d8" loading="lazy" title="Promo Reel"></iframe>
+                        <div class="reel-overlay">🔥 Promo Style</div>
+                    </div>
+                    <div class="reel-info">
+                        <h3>Brand Promo Reel</h3>
+                        <p>High retention structure</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Value props -->
+    <section class="dark-bg">
+        <div class="container">
+            <span class="section-label">✦ Why ShredFX</span>
+            <h2 class="section-title">Stop losing viewers <br> in the first 3 seconds</h2>
+            <p class="section-sub">Every edit is engineered to maximize watch time and engagement.</p>
+            <div class="value-grid">
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-chart-simple"></i></div>
+                    <div class="value-text">
+                        <h3>Retention Editing</h3>
+                        <p>Strategic hooks, jump cuts, and pacing that keeps eyes glued until the last frame.</p>
+                    </div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-closed-captioning"></i></div>
+                    <div class="value-text">
+                        <h3>Animated Subtitles</h3>
+                        <p>Dynamic captions that pop, improving accessibility and watch time by 40%+.</p>
+                    </div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"><i class="fas fa-chart-line"></i></div>
+                    <div class="value-text">
+                        <h3>Viral Ready</h3>
+                        <p>Optimized for Reels, Shorts & TikTok — algorithm-friendly aspect ratios and trends.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Simple process -->
+    <section>
+        <div class="container">
+            <span class="section-label">✦ How it works</span>
+            <h2 class="section-title">From raw clips to <br> viral reels in 3 steps</h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Send your footage</h3>
+                        <p>Raw videos, B-roll, or ideas — share via WhatsApp or Drive.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>I edit + add subtitles</h3>
+                        <p>Professional edit with hooks, transitions, and retention cuts.</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>You upload & grow</h3>
+                        <p>Post your high-retention reel and watch the analytics improve.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section>
+        <div class="container">
+            <div class="cta-block">
+                <h2>Ready to scale your content?</h2>
+                <p>Get a free sample edit — zero commitment, just results.</p>
+                <div class="cta-buttons">
+                    <a href="https://wa.me/918494043654" class="btn-wa" target="_blank"><i class="fab fa-whatsapp"></i> WhatsApp Now</a>
+                    <a href="https://www.instagram.com/shredfx_" class="btn-ig" target="_blank"><i class="fab fa-instagram"></i> DM on IG</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-logo-area">
+                <a href="index.html" class="logo" style="color:white;">
+                    <img src="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png" alt="ShredFX">
+                    SHRED<span style="color:var(--neon-mint);">FX</span>
+                </a>
+                <p style="margin-top: 12px; font-size:0.85rem;">High-retention reel edits that actually grow your channel.</p>
+                <div class="social-icons">
+                    <a href="https://www.instagram.com/shredfx_" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/918494043654" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:edits.shredfx@gmail.com"><i class="far fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-links-column">
+                <h4>Explore</h4>
+                <a href="index.html">Home</a>
+                <a href="portfolio.html">Portfolio</a>
+                <a href="services.html">Services</a>
+                <a href="contact.html">Contact</a>
+            </div>
+            <div class="footer-links-column">
+                <h4>Services</h4>
+                <a href="services.html">Reel Editing</a>
+                <a href="services.html">YouTube Shorts</a>
+                <a href="services.html">Subtitles & Captions</a>
+                <a href="services.html">Packages</a>
+            </div>
+            <div class="footer-links-column">
+                <h4>Contact</h4>
+                <a href="https://wa.me/918494043654">+91 84940 43654</a>
+                <a href="mailto:edits.shredfx@gmail.com">edits.shredfx@gmail.com</a>
+                <a href="#">24/7 Response</a>
+            </div>
+        </div>
+        <div class="copyright">
+            © 2026 ShredFX — Premium Video Editing for Creators. All rights reserved.
+        </div>
+    </div>
+</footer>
+
+<div class="sticky-bottom">
+    <a href="https://wa.me/918494043654" class="sticky-primary" target="_blank"><i class="fab fa-whatsapp"></i> Free Sample</a>
+    <a href="#portfolio" class="sticky-secondary">Watch Reels</a>
+</div>
+
+<script>
+    // mobile menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if(menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+    }
+    
+    // Update navbar based on auth state
+    function updateNavAuth() {
+        if (typeof auth !== 'undefined' && auth.currentUser !== undefined) {
+            const user = auth.currentUser;
+            const navContainer = document.querySelector('.nav-links');
+            if (!navContainer) return;
+            
+            const existingAuth = document.getElementById('firebaseAuthBtn');
+            if (existingAuth) existingAuth.remove();
+            
+            const authDiv = document.createElement('div');
+            authDiv.id = 'firebaseAuthBtn';
+            
+            if (user) {
+                authDiv.innerHTML = `<a href="dashboard.html" class="nav-link" style="background:var(--gradient-primary); color:white; padding:6px 16px; border-radius:40px;"><i class="fas fa-user"></i> Dashboard</a>`;
+            } else {
+                authDiv.innerHTML = `<a href="login.html" class="nav-link" style="background:var(--frost); padding:6px 16px; border-radius:40px;"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+            }
+            navContainer.appendChild(authDiv);
+        } else {
+            // fallback if firebase not fully loaded
+            const navContainer = document.querySelector('.nav-links');
+            if (navContainer && !document.getElementById('firebaseAuthBtn')) {
+                const authDiv = document.createElement('div');
+                authDiv.id = 'firebaseAuthBtn';
+                authDiv.innerHTML = `<a href="login.html" class="nav-link" style="background:var(--frost); padding:6px 16px; border-radius:40px;"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+                navContainer.appendChild(authDiv);
+            }
+        }
+    }
+    
+    if (typeof auth !== 'undefined' && auth.onAuthStateChanged) {
+        auth.onAuthStateChanged((user) => {
+            updateNavAuth();
+        });
+    } else {
+        // wait a bit for firebase
+        setTimeout(() => {
+            if (typeof auth !== 'undefined') {
+                updateNavAuth();
+                if(auth.onAuthStateChanged) auth.onAuthStateChanged(() => updateNavAuth());
+            }
+        }, 300);
+    }
+    
+    // Initial call
+    updateNavAuth();
+    
+    // smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            const href = this.getAttribute('href');
+            if(href === "#portfolio") {
+                e.preventDefault();
+                const target = document.querySelector('#portfolio');
+                if(target) target.scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+</body>
+</html>

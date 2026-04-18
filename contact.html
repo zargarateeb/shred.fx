@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ShredFX | Contact — Let's Create</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/5xwchyocd7/New%20Project%202%20_2B803B3_.png?updatedAt=1773053119572">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mint: #52b788;
+            --mint-dark: #2d6a4f;
+            --mint-soft: #d8f3dc;
+            --black: #081c15;
+            --charcoal: #1b4332;
+            --white: #ffffff;
+            --off-white: #f4faf6;
+            --border-glow: rgba(82, 183, 136, 0.25);
+            --shadow: 0 12px 28px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 35px rgba(45,106,79,0.12);
+            --gradient: linear-gradient(135deg, #52b788 0%, #2d6a4f 100%);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--black);
+            line-height: 1.45;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--border-glow);
+            z-index: 1000;
+            padding: 0 24px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.6rem;
+            color: var(--black);
+        }
+
+        .logo img {
+            height: 38px;
+        }
+
+        .logo span {
+            color: var(--mint);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--charcoal);
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--mint);
+        }
+
+        .nav-cta {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(82,183,136,0.3);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--charcoal);
+        }
+
+        /* contact header */
+        .contact-hero {
+            padding: 130px 0 50px;
+            background: linear-gradient(145deg, var(--mint-soft) 0%, #e9f5eb 100%);
+            text-align: center;
+        }
+
+        .contact-hero h1 {
+            font-size: clamp(2rem, 6vw, 3.2rem);
+            margin-bottom: 12px;
+        }
+
+        .contact-hero p {
+            color: var(--charcoal);
+            opacity: 0.8;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* contact cards row */
+        .contact-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+            margin-top: -30px;
+            margin-bottom: 56px;
+        }
+
+        .contact-card {
+            background: white;
+            border-radius: 28px;
+            padding: 24px 16px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            border: 1.5px solid var(--border-glow);
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+        }
+
+        .contact-card:active {
+            transform: scale(0.97);
+            border-color: var(--mint);
+        }
+
+        .contact-icon {
+            width: 64px;
+            height: 64px;
+            background: var(--gradient);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .contact-icon i {
+            font-size: 28px;
+            color: white;
+        }
+
+        .contact-card h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .contact-card .detail {
+            font-weight: 500;
+            color: var(--mint-dark);
+            word-break: break-word;
+        }
+
+        .contact-card .response {
+            font-size: 0.7rem;
+            color: #6c8b7c;
+            margin-top: 8px;
+        }
+
+        /* two column layout */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 40px;
+            margin: 40px 0 60px;
+        }
+
+        .form-box, .info-box {
+            background: white;
+            border-radius: 32px;
+            padding: 32px 28px;
+            border: 1px solid var(--border-glow);
+            box-shadow: var(--shadow);
+        }
+
+        .form-box h2, .info-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+        }
+
+        .form-box p, .info-box p {
+            color: #5a6e64;
+            margin-bottom: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 14px 18px;
+            background: var(--off-white);
+            border: 1.5px solid var(--border-glow);
+            border-radius: 20px;
+            font-family: inherit;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--mint);
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .submit-btn {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 16px;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+            margin-top: 12px;
+        }
+
+        .submit-btn:active {
+            transform: scale(0.98);
+        }
+
+        .info-item {
+            display: flex;
+            gap: 18px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-icon-sm {
+            width: 48px;
+            height: 48px;
+            background: var(--mint-soft);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--mint-dark);
+            font-size: 1.2rem;
+        }
+
+        .info-text h4 {
+            font-size: 1rem;
+            margin-bottom: 4px;
+        }
+
+        .info-text p, .info-text a {
+            color: #5a6e64;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+
+        .offer-badge {
+            background: var(--gradient);
+            border-radius: 24px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            margin-top: 24px;
+        }
+
+        .offer-badge h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+        }
+
+        .offer-badge .small {
+            font-size: 0.8rem;
+            opacity: 0.9;
+        }
+
+        /* faq */
+        .faq-section {
+            padding: 40px 0 60px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 40px;
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .faq-item {
+            background: white;
+            border-radius: 24px;
+            padding: 20px;
+            border: 1px solid var(--border-glow);
+            cursor: pointer;
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .faq-answer {
+            display: none;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-glow);
+            color: #5a6e64;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .faq-item.open .faq-answer {
+            display: block;
+        }
+
+        /* footer */
+        .footer {
+            background: var(--black);
+            color: rgba(255,255,255,0.6);
+            padding: 56px 0 30px;
+            margin-top: 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .footer-logo-area .logo {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            display: block;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 32px;
+            font-size: 0.75rem;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(37,211,102,0.4);
+            z-index: 99;
+            border: 2px solid white;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            z-index: 3000;
+            display: none;
+        }
+
+        @media (min-width: 768px) {
+            .two-col {
+                grid-template-columns: 1fr 1fr;
+            }
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
+            .faq-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 32px;
+                gap: 24px;
+                transition: left 0.3s;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+                z-index: 999;
+            }
+            .nav-links.open { left: 0; }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<a href="https://wa.me/918494043654" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            SHRED<span>FX</span>
+        </a>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="services.html" class="nav-link">Pricing</a>
+            <a href="contact.html" class="nav-link active">Contact</a>
+            <a href="https://wa.me/918494043654" class="nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Free Sample</a>
+        </div>
+    </div>
+</nav>
+
+<div class="contact-hero">
+    <div class="container">
+        <h1>Let's bring <span style="color: var(--mint-dark);">your vision</span> to life</h1>
+        <p>Fast replies, clear communication, and edits that actually grow your channel.</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- quick contact cards -->
+    <div class="contact-row">
+        <a href="https://wa.me/918494043654" class="contact-card" target="_blank">
+            <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+            <h3>WhatsApp</h3>
+            <div class="detail">+91 84940 43654</div>
+            <div class="response">⏱️ Reply within 30 min</div>
+        </a>
+        <a href="https://www.instagram.com/shredfx_" class="contact-card" target="_blank">
+            <div class="contact-icon"><i class="fab fa-instagram"></i></div>
+            <h3>Instagram</h3>
+            <div class="detail">@shredfx_</div>
+            <div class="response">📱 DM for quick chat</div>
+        </a>
+        <a href="mailto:edits.shredfx@gmail.com" class="contact-card">
+            <div class="contact-icon"><i class="far fa-envelope"></i></div>
+            <h3>Email</h3>
+            <div class="detail">edits.shredfx</div>
+            <div class="response">📧 24h response</div>
+        </a>
+        <a href="tel:+918494043654" class="contact-card">
+            <div class="contact-icon"><i class="fas fa-phone-alt"></i></div>
+            <h3>Call / SMS</h3>
+            <div class="detail">+91 84940 43654</div>
+            <div class="response">📞 10AM – 8PM IST</div>
+        </a>
+    </div>
+
+    <!-- main contact area -->
+    <div class="two-col">
+        <div class="form-box">
+            <h2>Send a <span style="color: var(--mint);">message</span></h2>
+            <p>Tell me about your project, and I'll get back within a few hours.</p>
+            <form id="contactForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <input type="text" id="name" placeholder="Full name" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" id="email" placeholder="Email address" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="tel" id="phone" placeholder="Phone (optional)">
+                </div>
+                <div class="form-group">
+                    <select id="service">
+                        <option value="">-- What service do you need? --</option>
+                        <option>Reels / Shorts Editing</option>
+                        <option>YouTube Video Editing</option>
+                        <option>Thumbnail Design</option>
+                        <option>Monthly Subscription</option>
+                        <option>Bulk Deal</option>
+                        <option>Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <textarea id="message" rows="4" placeholder="Describe your project, duration, style, deadline..."></textarea>
+                </div>
+                <button type="submit" class="submit-btn"><i class="fas fa-paper-plane"></i> Send Message</button>
+            </form>
+        </div>
+
+        <div class="info-box">
+            <h2>Get in touch</h2>
+            <p>Prefer direct contact? Here's everything.</p>
+            <div class="info-item">
+                <div class="info-icon-sm"><i class="fab fa-whatsapp"></i></div>
+                <div class="info-text">
+                    <h4>WhatsApp (fastest)</h4>
+                    <a href="https://wa.me/918494043654">+91 84940 43654</a>
+                    <p>Response time: &lt; 30 minutes</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon-sm"><i class="far fa-clock"></i></div>
+                <div class="info-text">
+                    <h4>Business hours</h4>
+                    <p>Monday – Saturday: 10 AM – 8 PM IST<br>Sunday: emergency only</p>
+                </div>
+            </div>
+            <div class="info-item">
+                <div class="info-icon-sm"><i class="fas fa-tag"></i></div>
+                <div class="info-text">
+                    <h4>First order offer</h4>
+                    <p><strong>30% OFF</strong> + free thumbnail 🎁</p>
+                </div>
+            </div>
+            <div class="offer-badge">
+                <h4>⚡ Quick response guaranteed</h4>
+                <div class="small">DM on Instagram or WhatsApp for instant reply</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ section -->
+    <div class="faq-section">
+        <h2 class="section-title">Frequently asked <span style="color: var(--mint);">questions</span></h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question">How do I send my raw footage? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">You can share via Google Drive, Dropbox, or WeTransfer. I'll provide a secure upload link after we confirm the project.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What's your revision policy? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Basic plans include 1 revision, Standard includes 2, and Premium/Unlimited plans offer unlimited revisions until you're 100% satisfied.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Do you offer rush delivery? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Yes! For urgent projects, I offer 12-hour delivery for an extra ₹200. Just mention it when you reach out.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">How can I pay? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Google Pay, PhonePe, Paytm, or bank transfer. 50% advance, 50% after preview approval.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Can I get a free sample edit? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">Absolutely. Just send a short clip on WhatsApp, and I'll edit a 15-20 second sample for free — no commitment.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">What if I'm not satisfied? <i class="fas fa-chevron-down"></i></div>
+                <div class="faq-answer">I offer revisions until you love the result. For monthly plans, you can cancel anytime.</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-logo-area">
+                <a href="index.html" class="logo" style="color:white;"><img src="https://ik.imagekit.io/5xwchyocd7/New%20Project%202%20_2B803B3_.png?updatedAt=1773053119572"> SHRED<span style="color:var(--mint);">FX</span></a>
+                <p style="margin-top: 12px; font-size:0.85rem;">High-retention reel edits that grow your channel.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/shredfx_" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/918494043654" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:edits.shredfx@gmail.com"><i class="far fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-links"><h4>Explore</h4><a href="index.html">Home</a><a href="portfolio.html">Work</a><a href="services.html">Pricing</a><a href="contact.html">Contact</a></div>
+            <div class="footer-links"><h4>Services</h4><a href="services.html">Reel Editing</a><a href="services.html">YouTube Shorts</a><a href="services.html">Subtitles</a><a href="services.html">Packages</a></div>
+            <div class="footer-links"><h4>Contact</h4><a href="https://wa.me/918494043654">+91 84940 43654</a><a href="mailto:edits.shredfx@gmail.com">edits.shredfx@gmail.com</a></div>
+        </div>
+        <div class="copyright">© 2026 ShredFX — Premium Video Editing for Creators.</div>
+    </div>
+</footer>
+
+<div class="toast" id="toastMsg">Message sent! We'll reply soon.</div>
+
+<script>
+    // mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if(menuBtn) {
+        menuBtn.addEventListener('click', () => navLinks.classList.toggle('open'));
+        document.querySelectorAll('.nav-link').forEach(l => l.addEventListener('click', () => navLinks.classList.remove('open')));
+    }
+
+    // FAQ toggle
+    document.querySelectorAll('.faq-item').forEach(item => {
+        const q = item.querySelector('.faq-question');
+        q.addEventListener('click', () => {
+            item.classList.toggle('open');
+            const icon = q.querySelector('i');
+            if(icon) icon.style.transform = item.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0)';
+        });
+    });
+
+    // supabase + form handling
+    const supabaseUrl = 'https://veqfqexjjowjgdaecljt.supabase.co';
+    const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZlcWZxZXhqam93amdkYWVjbGp0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyMTI2NjksImV4cCI6MjA4ODc4ODY2OX0.gGKCEChxQowyKRLXumfGpi-LniWdT8jvr_wWcUSSfqg';
+    const supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+    // show toast
+    function showToast(msg) {
+        const toast = document.getElementById('toastMsg');
+        toast.textContent = msg;
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 3000);
+    }
+
+    // contact form submission (store in supabase + notify)
+    const form = document.getElementById('contactForm');
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const name = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        const service = document.getElementById('service').value;
+        const message = document.getElementById('message').value.trim();
+
+        if(!name || !email) {
+            showToast('Please fill name and email');
+            return;
+        }
+
+        // store in supabase table 'contacts' (assuming you have this table)
+        const { error } = await supabase.from('contacts').insert([{
+            name, email, phone, service, message,
+            created_at: new Date(),
+            status: 'new'
+        }]);
+
+        if(error) {
+            console.error(error);
+            showToast('Error sending message, but you can reach us on WhatsApp directly.');
+        } else {
+            showToast('✅ Message sent! We'll reply within 30 minutes.');
+            form.reset();
+            // optional: send notification to admin via whatsapp
+            const adminMsg = `🔔 New contact from ${name} (${email})\nService: ${service}\nMessage: ${message.substring(0,100)}`;
+            window.open(`https://wa.me/918494043654?text=${encodeURIComponent(adminMsg)}`, '_blank');
+        }
+    });
+
+    // dynamic account menu (simple auth state)
+    async function updateAccountUI() {
+        const { data: { user } } = await supabase.auth.getUser();
+        const navContainer = document.querySelector('.nav-links');
+        if(!navContainer) return;
+        const existing = document.getElementById('dynamicAuth');
+        if(existing) existing.remove();
+        const authDiv = document.createElement('div');
+        authDiv.id = 'dynamicAuth';
+        if(user) {
+            authDiv.innerHTML = `<a href="dashboard.html" class="nav-link" style="background:var(--gradient); color:white; padding:6px 16px; border-radius:40px;"><i class="fas fa-user"></i> Dashboard</a>`;
+        } else {
+            authDiv.innerHTML = `<a href="login.html" class="nav-link" style="background:var(--mint-soft); padding:6px 16px; border-radius:40px;"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+        }
+        navContainer.appendChild(authDiv);
+    }
+    updateAccountUI();
+    supabase.auth.onAuthStateChange(() => updateAccountUI());
+</script>
+</body>
+</html>

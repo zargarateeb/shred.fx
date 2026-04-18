@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>ShredFX | Pricing — High-Retention Edits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mint: #52b788;
+            --mint-dark: #2d6a4f;
+            --mint-soft: #d8f3dc;
+            --black: #081c15;
+            --charcoal: #1b4332;
+            --white: #ffffff;
+            --off-white: #f4faf6;
+            --border-glow: rgba(82, 183, 136, 0.25);
+            --shadow: 0 12px 28px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 35px rgba(45,106,79,0.12);
+            --gradient: linear-gradient(135deg, #52b788 0%, #2d6a4f 100%);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--black);
+            line-height: 1.45;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--border-glow);
+            z-index: 1000;
+            padding: 0 24px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.6rem;
+            color: var(--black);
+        }
+
+        .logo img {
+            height: 38px;
+        }
+
+        .logo span {
+            color: var(--mint);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--charcoal);
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--mint);
+        }
+
+        .nav-cta {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(82,183,136,0.3);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--charcoal);
+        }
+
+        .pricing-header {
+            padding: 130px 0 40px;
+            background: linear-gradient(145deg, var(--mint-soft) 0%, #e9f5eb 100%);
+            text-align: center;
+        }
+
+        .flash-badge {
+            display: inline-block;
+            background: var(--gradient);
+            color: white;
+            padding: 10px 28px;
+            border-radius: 60px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); box-shadow: 0 4px 12px rgba(82,183,136,0.3);}
+            50% { transform: scale(1.02); box-shadow: 0 12px 28px rgba(82,183,136,0.5);}
+            100% { transform: scale(1);}
+        }
+
+        .pricing-header h1 {
+            font-size: clamp(2.2rem, 6vw, 3.5rem);
+            margin-bottom: 12px;
+        }
+
+        .pricing-header p {
+            color: var(--charcoal);
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        .section-wrap {
+            padding: 56px 0;
+            border-bottom: 1px solid var(--border-glow);
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .section-title i {
+            color: var(--mint);
+            font-size: 1.6rem;
+        }
+
+        .section-sub {
+            color: #5a6e64;
+            margin-bottom: 32px;
+            font-size: 0.9rem;
+        }
+
+        .scroll-cards {
+            display: flex;
+            gap: 24px;
+            overflow-x: auto;
+            padding: 12px 4px 24px;
+            scrollbar-width: thin;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .scroll-cards::-webkit-scrollbar {
+            height: 5px;
+        }
+
+        .pricing-card {
+            flex: 0 0 280px;
+            background: white;
+            border-radius: 28px;
+            padding: 24px 20px;
+            border: 1.5px solid var(--border-glow);
+            transition: all 0.2s;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--mint);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .popular-ribbon {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background: var(--gradient);
+            color: white;
+            padding: 5px 16px;
+            border-radius: 40px;
+            font-size: 0.7rem;
+            font-weight: 800;
+        }
+
+        .plan-name {
+            font-size: 1.5rem;
+            margin-bottom: 12px;
+        }
+
+        .price-box {
+            background: var(--mint-soft);
+            padding: 12px;
+            border-radius: 20px;
+            text-align: center;
+            margin: 18px 0;
+        }
+
+        .price {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--mint-dark);
+        }
+
+        .old-price {
+            text-decoration: line-through;
+            color: #6c8b7c;
+            font-size: 0.85rem;
+            margin-left: 8px;
+        }
+
+        .features {
+            list-style: none;
+            margin: 20px 0;
+        }
+
+        .features li {
+            padding: 8px 0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #e9f0ec;
+        }
+
+        .features li i {
+            color: var(--mint);
+            width: 20px;
+        }
+
+        .btn-buy {
+            width: 100%;
+            background: var(--gradient);
+            color: white;
+            border: none;
+            padding: 14px 0;
+            border-radius: 50px;
+            font-weight: 800;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 12px rgba(82,183,136,0.3);
+        }
+
+        .btn-buy:active {
+            transform: scale(0.97);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(8px);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-card {
+            background: white;
+            max-width: 440px;
+            width: 100%;
+            border-radius: 40px;
+            padding: 28px 24px;
+            position: relative;
+            animation: fadeUp 0.25s;
+        }
+
+        @keyframes fadeUp {
+            from { transform: translateY(30px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 18px;
+            right: 22px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--charcoal);
+        }
+
+        .qr-img {
+            width: 180px;
+            height: auto;
+            margin: 16px auto;
+            display: block;
+            border-radius: 20px;
+            border: 2px solid var(--mint-soft);
+            padding: 8px;
+        }
+
+        .upi-id {
+            background: var(--mint-soft);
+            padding: 12px;
+            border-radius: 50px;
+            text-align: center;
+            font-weight: 600;
+            margin: 16px 0;
+            word-break: break-all;
+        }
+
+        .app-icons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .app-circle {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.1s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .app-circle:active { transform: scale(0.94);}
+        .googlepay { background: #4285F4; }
+        .phonepe { background: #5F259F; }
+        .paytm { background: #00BAF2; }
+        .copy-btn { background: var(--mint-dark); }
+
+        .btn-paid {
+            background: #25D366;
+            color: white;
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 800;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+
+        .btn-help {
+            background: #128C7E;
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 50px;
+            color: white;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .footer {
+            background: var(--black);
+            color: rgba(255,255,255,0.6);
+            padding: 56px 0 30px;
+            margin-top: 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .footer-logo-area .logo {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            display: block;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 32px;
+            font-size: 0.75rem;
+        }
+
+        .toast-msg {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--black);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 60px;
+            font-weight: 600;
+            z-index: 3000;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(37,211,102,0.4);
+            z-index: 99;
+            border: 2px solid white;
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 32px;
+                gap: 24px;
+                transition: left 0.3s;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+                z-index: 999;
+            }
+            .nav-links.open { left: 0; }
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+            .toast-msg { white-space: normal; width: 90%; text-align: center; }
+        }
+
+        @media (min-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<a href="https://wa.me/918494043654" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            SHRED<span>FX</span>
+        </a>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="portfolio.html" class="nav-link">Portfolio</a>
+            <a href="services.html" class="nav-link active">Pricing</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+            <a href="https://wa.me/918494043654" class="nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Free Sample</a>
+        </div>
+    </div>
+</nav>
+
+<div class="pricing-header">
+    <div class="container">
+        <div class="flash-badge">🔥 FIRST ORDER: 30% OFF + FREE THUMBNAIL 🔥</div>
+        <h1>Invest in <span style="color: var(--mint-dark);">growth</span></h1>
+        <p>Transparent pricing, no hidden fees. Start with a free sample edit.</p>
+    </div>
+</div>
+
+<div class="container">
+    <!-- Thumbnails -->
+    <div class="section-wrap">
+        <div class="section-title"><i class="fas fa-image"></i> Thumbnails <span style="font-size: 0.9rem; background: var(--mint-soft); padding: 4px 12px; border-radius: 30px;">click-to-buy</span></div>
+        <div class="scroll-cards">
+            <div class="pricing-card"><div class="plan-name">Single</div><div class="price-box"><span class="price">₹80</span></div><ul class="features"><li><i class="fas fa-check"></i> Custom design</li><li><i class="fas fa-check"></i> 1 revision</li><li><i class="fas fa-check"></i> 12h delivery</li></ul><button class="btn-buy" data-plan="Single Thumbnail" data-price="80">Buy Now</button></div>
+            <div class="pricing-card"><div class="popular-ribbon">Best Value</div><div class="plan-name">5 Pack</div><div class="price-box"><span class="price">₹350</span> <span class="old-price">₹400</span></div><ul class="features"><li><i class="fas fa-check"></i> 5 thumbnails</li><li><i class="fas fa-check"></i> 2 revisions each</li><li><i class="fas fa-check"></i> Priority support</li></ul><button class="btn-buy" data-plan="5 Pack Thumbnails" data-price="350">Buy Now</button></div>
+            <div class="pricing-card"><div class="plan-name">10 Pack</div><div class="price-box"><span class="price">₹600</span> <span class="old-price">₹800</span></div><ul class="features"><li><i class="fas fa-check"></i> 10 thumbnails</li><li><i class="fas fa-check"></i> 3 revisions</li><li><i class="fas fa-check"></i> Source files</li></ul><button class="btn-buy" data-plan="10 Pack Thumbnails" data-price="600">Buy Now</button></div>
+        </div>
+    </div>
+
+    <!-- Reels/Shorts -->
+    <div class="section-wrap">
+        <div class="section-title"><i class="fas fa-mobile-alt"></i> Reels & Shorts</div>
+        <div class="scroll-cards">
+            <div class="pricing-card"><div class="plan-name">Basic</div><div class="price-box"><span class="price">₹200</span></div><ul class="features"><li><i class="fas fa-check"></i> Up to 1 min</li><li><i class="fas fa-check"></i> Captions + cuts</li><li><i class="fas fa-check"></i> 48h delivery</li></ul><button class="btn-buy" data-plan="Basic Reel" data-price="200">Buy Now</button></div>
+            <div class="pricing-card"><div class="popular-ribbon">🔥 Most Popular</div><div class="plan-name">Standard</div><div class="price-box"><span class="price">₹400</span> <span class="old-price">₹520</span></div><ul class="features"><li><i class="fas fa-check"></i> Up to 2 mins</li><li><i class="fas fa-check"></i> Color grading</li><li><i class="fas fa-check"></i> Text animations</li><li><i class="fas fa-check"></i> 2 revisions</li></ul><button class="btn-buy" data-plan="Standard Reel" data-price="400">Buy Now</button></div>
+            <div class="pricing-card"><div class="plan-name">Premium</div><div class="price-box"><span class="price">₹800</span> <span class="old-price">₹1040</span></div><ul class="features"><li><i class="fas fa-check"></i> Up to 3 mins</li><li><i class="fas fa-check"></i> Motion graphics</li><li><i class="fas fa-check"></i> Unlimited revisions</li><li><i class="fas fa-check"></i> 24h delivery</li></ul><button class="btn-buy" data-plan="Premium Reel" data-price="800">Buy Now</button></div>
+        </div>
+    </div>
+
+    <!-- YouTube -->
+    <div class="section-wrap">
+        <div class="section-title"><i class="fab fa-youtube"></i> YouTube Videos</div>
+        <div class="scroll-cards">
+            <div class="pricing-card"><div class="plan-name">Basic YT</div><div class="price-box"><span class="price">₹800</span> <span class="old-price">₹1040</span></div><ul class="features"><li><i class="fas fa-check"></i> Up to 10 mins</li><li><i class="fas fa-check"></i> Audio leveling</li><li><i class="fas fa-check"></i> 72h delivery</li></ul><button class="btn-buy" data-plan="Basic YouTube" data-price="800">Buy Now</button></div>
+            <div class="pricing-card"><div class="popular-ribbon">Recommended</div><div class="plan-name">Standard YT</div><div class="price-box"><span class="price">₹1500</span> <span class="old-price">₹1950</span></div><ul class="features"><li><i class="fas fa-check"></i> Up to 15 mins</li><li><i class="fas fa-check"></i> B-roll + grading</li><li><i class="fas fa-check"></i> Thumbnail included</li></ul><button class="btn-buy" data-plan="Standard YouTube" data-price="1500">Buy Now</button></div>
+            <div class="pricing-card"><div class="plan-name">Premium YT</div><div class="price-box"><span class="price">₹2500</span> <span class="old-price">₹3250</span></div><ul class="features"><li><i class="fas fa-check"></i> Up to 20 mins</li><li><i class="fas fa-check"></i> Custom animations</li><li><i class="fas fa-check"></i> 3 thumbnails</li></ul><button class="btn-buy" data-plan="Premium YouTube" data-price="2500">Buy Now</button></div>
+        </div>
+    </div>
+
+    <!-- Bulk deals -->
+    <div class="section-wrap">
+        <div class="section-title"><i class="fas fa-layer-group"></i> Bulk Deals</div>
+        <div class="scroll-cards">
+            <div class="pricing-card"><div class="plan-name">5 Reels</div><div class="price-box"><span class="price">₹1800</span></div><ul class="features"><li><i class="fas fa-check"></i> Save ₹200</li><li><i class="fas fa-check"></i> Premium editing</li></ul><button class="btn-buy" data-plan="5 Reels Bulk" data-price="1800">Buy Now</button></div>
+            <div class="pricing-card"><div class="popular-ribbon">🔥 Best Value</div><div class="plan-name">10 Reels</div><div class="price-box"><span class="price">₹3200</span></div><ul class="features"><li><i class="fas fa-check"></i> Save ₹800</li><li><i class="fas fa-check"></i> Priority delivery</li></ul><button class="btn-buy" data-plan="10 Reels Bulk" data-price="3200">Buy Now</button></div>
+            <div class="pricing-card"><div class="plan-name">5 YouTube</div><div class="price-box"><span class="price">₹11,000</span></div><ul class="features"><li><i class="fas fa-check"></i> Save ₹1500</li><li><i class="fas fa-check"></i> Thumbnails included</li></ul><button class="btn-buy" data-plan="5 YouTube Bulk" data-price="11000">Buy Now</button></div>
+        </div>
+    </div>
+
+    <!-- monthly packages -->
+    <div class="section-wrap">
+        <div class="section-title"><i class="fas fa-calendar-alt"></i> Monthly Subscriptions</div>
+        <div class="scroll-cards">
+            <div class="pricing-card"><div class="plan-name">Starter</div><div class="price-box"><span class="price">₹2000</span><span style="font-size:0.8rem;">/mo</span></div><ul class="features"><li><i class="fas fa-check"></i> 4 Reels</li><li><i class="fas fa-check"></i> 2 Thumbnails</li><li><i class="fas fa-check"></i> 48h turnaround</li></ul><button class="btn-buy" data-plan="Monthly Starter" data-price="2000">Buy Now</button></div>
+            <div class="pricing-card"><div class="popular-ribbon">🏆 Most Popular</div><div class="plan-name">Creator</div><div class="price-box"><span class="price">₹5000</span><span style="font-size:0.8rem;">/mo</span></div><ul class="features"><li><i class="fas fa-check"></i> 10 Reels + 5 Thumbnails</li><li><i class="fas fa-check"></i> 2 YouTube videos</li><li><i class="fas fa-check"></i> 24h priority</li></ul><button class="btn-buy" data-plan="Monthly Creator" data-price="5000">Buy Now</button></div>
+            <div class="pricing-card"><div class="plan-name">Agency</div><div class="price-box"><span class="price">₹12000</span><span style="font-size:0.8rem;">/mo</span></div><ul class="features"><li><i class="fas fa-check"></i> 25 Reels + 15 Thumbnails</li><li><i class="fas fa-check"></i> 5 YouTube videos</li><li><i class="fas fa-check"></i> 12h delivery</li></ul><button class="btn-buy" data-plan="Monthly Agency" data-price="12000">Buy Now</button></div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="paymentModal">
+    <div class="modal-card">
+        <button class="modal-close" id="closeModalBtn">&times;</button>
+        <h3 id="modalPlanName" style="font-size:1.4rem;">Plan</h3>
+        <div class="price" id="modalPrice" style="font-size:1.8rem; margin:8px 0;">₹0</div>
+        <div class="upi-id" id="upiIdDisplay">zargarateeb4@oksbi</div>
+        <div class="app-icons">
+            <div class="app-circle googlepay" id="gpayBtn"><i class="fab fa-google-pay" style="color:white; font-size:26px;"></i></div>
+            <div class="app-circle phonepe" id="phonepeBtn"><i class="fas fa-mobile-alt" style="color:white; font-size:24px;"></i></div>
+            <div class="app-circle paytm" id="paytmBtn"><i class="fab fa-paypal" style="color:white; font-size:24px;"></i></div>
+            <div class="app-circle copy-btn" id="copyUpiBtn"><i class="far fa-copy" style="color:white; font-size:22px;"></i></div>
+        </div>
+        <button class="btn-paid" id="paidBtn"><i class="fas fa-check-circle"></i> ✅ I HAVE PAID</button>
+        <button class="btn-help" id="helpBtn"><i class="fab fa-whatsapp"></i> Need Help?</button>
+    </div>
+</div>
+
+<div class="toast-msg" id="toastMsg">Copied!</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-logo-area">
+                <a href="index.html" class="logo" style="color:white;"><img src="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png"> SHRED<span style="color:var(--mint);">FX</span></a>
+                <p style="margin-top: 12px; font-size:0.85rem;">High-retention reel edits that grow your channel.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/shredfx_" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/918494043654" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:edits.shredfx@gmail.com"><i class="far fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-links"><h4>Explore</h4><a href="index.html">Home</a><a href="portfolio.html">Work</a><a href="services.html">Pricing</a><a href="contact.html">Contact</a></div>
+            <div class="footer-links"><h4>Services</h4><a href="#">Reel Editing</a><a href="#">YouTube Shorts</a><a href="#">Subtitles</a><a href="#">Packages</a></div>
+            <div class="footer-links"><h4>Contact</h4><a href="https://wa.me/918494043654">+91 84940 43654</a><a href="mailto:edits.shredfx@gmail.com">edits.shredfx@gmail.com</a></div>
+        </div>
+        <div class="copyright">© 2026 ShredFX — Premium Video Editing for Creators.</div>
+    </div>
+</footer>
+
+<script>
+    const UPI_ID = 'zargarateeb4@oksbi';
+    let currentPlanObj = { name: '', price: 0 };
+
+    function showToast(msg, isError = false) {
+        const toast = document.getElementById('toastMsg');
+        toast.textContent = msg;
+        toast.style.background = isError ? '#dc3545' : '#081c15';
+        toast.style.display = 'block';
+        setTimeout(() => toast.style.display = 'none', 2800);
+    }
+
+    document.querySelectorAll('.btn-buy').forEach(btn => {
+        btn.addEventListener('click', async () => {
+            const user = auth.currentUser;
+            if (!user) {
+                showToast('Please login first to purchase', true);
+                setTimeout(() => window.location.href = 'login.html', 1500);
+                return;
+            }
+            
+            currentPlanObj = {
+                name: btn.dataset.plan,
+                price: parseInt(btn.dataset.price)
+            };
+            
+            document.getElementById('modalPlanName').innerText = currentPlanObj.name;
+            document.getElementById('modalPrice').innerHTML = `₹${currentPlanObj.price.toLocaleString()}`;
+            document.getElementById('paymentModal').classList.add('active');
+        });
+    });
+
+    function closeModal() { 
+        document.getElementById('paymentModal').classList.remove('active'); 
+    }
+    document.getElementById('closeModalBtn').addEventListener('click', closeModal);
+    document.getElementById('paymentModal').addEventListener('click', (e) => { 
+        if(e.target === document.getElementById('paymentModal')) closeModal(); 
+    });
+
+    document.getElementById('copyUpiBtn').addEventListener('click', () => {
+        navigator.clipboard.writeText(UPI_ID);
+        showToast('UPI ID copied!');
+    });
+
+    function payWithApp(app) {
+        const amount = currentPlanObj.price;
+        const note = encodeURIComponent(currentPlanObj.name);
+        let appLink = `upi://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR&tn=${note}`;
+        
+        if(app === 'googlepay') appLink = `tez://upi/pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR&tn=${note}`;
+        else if(app === 'phonepe') appLink = `phonepe://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR&tn=${note}`;
+        else if(app === 'paytm') appLink = `paytmmp://pay?pa=${UPI_ID}&pn=ShredFX&am=${amount}&cu=INR&tn=${note}`;
+        
+        window.location.href = appLink;
+        setTimeout(() => { showToast('If app doesn\'t open, copy UPI ID manually'); }, 800);
+    }
+    
+    document.getElementById('gpayBtn').onclick = () => payWithApp('googlepay');
+    document.getElementById('phonepeBtn').onclick = () => payWithApp('phonepe');
+    document.getElementById('paytmBtn').onclick = () => payWithApp('paytm');
+
+    document.getElementById('paidBtn').addEventListener('click', async () => {
+        const user = auth.currentUser;
+        if(!user) { 
+            showToast('Please login again', true); 
+            return; 
+        }
+        
+        try {
+            await db.collection('orders').add({
+                user_id: user.uid,
+                user_email: user.email,
+                user_name: user.displayName || user.email.split('@')[0],
+                plan_name: currentPlanObj.name,
+                amount: currentPlanObj.price,
+                status: 'pending',
+                upi_id: UPI_ID,
+                created_at: firebase.firestore.FieldValue.serverTimestamp()
+            });
+            
+            const msg = `🔔 *NEW ORDER* 🔔\nPlan: ${currentPlanObj.name}\nAmount: ₹${currentPlanObj.price}\nCustomer: ${user.email}\nUPI: ${UPI_ID}`;
+            window.open(`https://wa.me/918494043654?text=${encodeURIComponent(msg)}`, '_blank');
+            showToast('Order placed! You will receive confirmation within 30 min.');
+            closeModal();
+        } catch(error) {
+            console.error(error);
+            showToast('Error placing order', true);
+        }
+    });
+
+    document.getElementById('helpBtn').onclick = () => window.open('https://wa.me/918494043654', '_blank');
+
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    menuBtn?.addEventListener('click', () => navLinks.classList.toggle('open'));
+    
+    function updateNavAuth() {
+        const user = auth.currentUser;
+        const container = document.querySelector('.nav-links');
+        if(!container) return;
+        
+        const existing = document.getElementById('firebaseAuthBtn');
+        if(existing) existing.remove();
+        
+        const authDiv = document.createElement('div');
+        authDiv.id = 'firebaseAuthBtn';
+        
+        if(user) {
+            authDiv.innerHTML = `<a href="dashboard.html" class="nav-link" style="background:var(--gradient); color:white; padding:6px 16px; border-radius:40px;"><i class="fas fa-user"></i> Dashboard</a>`;
+        } else {
+            authDiv.innerHTML = `<a href="login.html" class="nav-link" style="background:var(--mint-soft); padding:6px 16px; border-radius:40px;"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+        }
+        container.appendChild(authDiv);
+    }
+    
+    auth.onAuthStateChanged(() => updateNavAuth());
+    updateNavAuth();
+</script>
+</body>
+</html>

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Portfolio | ShredFX - Watch Our Best Edits</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --mint: #52b788;
+            --mint-dark: #2d6a4f;
+            --mint-soft: #d8f3dc;
+            --black: #081c15;
+            --charcoal: #1b4332;
+            --white: #ffffff;
+            --off-white: #f4faf6;
+            --border-glow: rgba(82, 183, 136, 0.25);
+            --shadow: 0 12px 28px rgba(0,0,0,0.08);
+            --shadow-lg: 0 20px 35px rgba(45,106,79,0.12);
+            --gradient: linear-gradient(135deg, #52b788 0%, #2d6a4f 100%);
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--black);
+            line-height: 1.45;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, .logo {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* navbar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255,255,255,0.96);
+            backdrop-filter: blur(12px);
+            border-bottom: 2px solid var(--border-glow);
+            z-index: 1000;
+            padding: 0 24px;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+            max-width: 1280px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+            font-size: 1.6rem;
+            color: var(--black);
+        }
+
+        .logo img {
+            height: 38px;
+        }
+
+        .logo span {
+            color: var(--mint);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            font-weight: 600;
+            color: var(--charcoal);
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: var(--mint);
+        }
+
+        .nav-cta {
+            background: var(--gradient);
+            color: white;
+            padding: 10px 22px;
+            border-radius: 40px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(82,183,136,0.3);
+        }
+
+        .menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--charcoal);
+        }
+
+        /* portfolio header */
+        .portfolio-header {
+            padding: 130px 0 50px;
+            background: linear-gradient(145deg, var(--mint-soft) 0%, #e9f5eb 100%);
+            text-align: center;
+        }
+
+        .portfolio-header h1 {
+            font-size: clamp(2rem, 6vw, 3.5rem);
+            margin-bottom: 12px;
+        }
+
+        .portfolio-header p {
+            color: var(--charcoal);
+            opacity: 0.8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* filter buttons */
+        .filter-section {
+            padding: 30px 0;
+            text-align: center;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 2px solid var(--border-glow);
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .filter-btn.active {
+            background: var(--gradient);
+            color: white;
+            border-color: var(--mint);
+        }
+
+        /* portfolio grid */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .portfolio-item {
+            background: white;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.3s;
+            border: 1px solid var(--border-glow);
+        }
+
+        .portfolio-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .video-wrapper {
+            position: relative;
+            aspect-ratio: 9/16;
+            background: var(--black);
+        }
+
+        .video-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .portfolio-info {
+            padding: 20px;
+        }
+
+        .portfolio-info h3 {
+            font-size: 1.2rem;
+            margin-bottom: 6px;
+        }
+
+        .portfolio-info p {
+            color: #5a6e64;
+            font-size: 0.85rem;
+            margin-bottom: 12px;
+        }
+
+        .portfolio-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .tag {
+            background: var(--mint-soft);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--mint-dark);
+        }
+
+        /* stats section */
+        .stats-section {
+            background: var(--gradient);
+            padding: 60px 0;
+            color: white;
+            text-align: center;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+
+        .stat-card h3 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        /* cta section */
+        .cta-section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .cta-box {
+            background: var(--mint-soft);
+            border-radius: 40px;
+            padding: 48px 32px;
+        }
+
+        .cta-box h2 {
+            font-size: 1.8rem;
+            margin-bottom: 16px;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            padding: 14px 32px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        /* footer */
+        .footer {
+            background: var(--black);
+            color: rgba(255,255,255,0.6);
+            padding: 56px 0 30px;
+            margin-top: 20px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .footer-logo-area .logo {
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+        }
+
+        .footer-links h4 {
+            color: white;
+            margin-bottom: 16px;
+        }
+
+        .footer-links a {
+            display: block;
+            color: rgba(255,255,255,0.5);
+            text-decoration: none;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            margin-top: 32px;
+            font-size: 0.75rem;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #25D366;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 28px;
+            text-decoration: none;
+            box-shadow: 0 4px 14px rgba(37,211,102,0.4);
+            z-index: 99;
+            border: 2px solid white;
+        }
+
+        @media (min-width: 768px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+            }
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .portfolio-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .menu-btn {
+                display: block;
+            }
+            .nav-links {
+                position: fixed;
+                top: 70px;
+                left: -100%;
+                width: 80%;
+                height: calc(100vh - 70px);
+                background: white;
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 32px;
+                gap: 24px;
+                transition: left 0.3s;
+                box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+                z-index: 999;
+            }
+            .nav-links.open { left: 0; }
+        }
+    </style>
+</head>
+<body>
+
+<a href="https://wa.me/918494043654" class="whatsapp-float" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+<nav class="navbar">
+    <div class="nav-container">
+        <a href="index.html" class="logo">
+            SHRED<span>FX</span>
+        </a>
+        <button class="menu-btn" id="menuBtn"><i class="fas fa-bars"></i></button>
+        <div class="nav-links" id="navLinks">
+            <a href="index.html" class="nav-link">Home</a>
+            <a href="portfolio.html" class="nav-link active">Portfolio</a>
+            <a href="services.html" class="nav-link">Pricing</a>
+            <a href="contact.html" class="nav-link">Contact</a>
+            <a href="https://wa.me/918494043654" class="nav-cta" target="_blank"><i class="fab fa-whatsapp"></i> Free Sample</a>
+        </div>
+    </div>
+</nav>
+
+<div class="portfolio-header">
+    <div class="container">
+        <h1>Our <span style="color: var(--mint-dark);">Best Work</span></h1>
+        <p>Watch how we transform raw footage into high-retention, viral-ready content</p>
+    </div>
+</div>
+
+<div class="container">
+    <div class="filter-section">
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="reels">Reels / Shorts</button>
+            <button class="filter-btn" data-filter="youtube">YouTube</button>
+            <button class="filter-btn" data-filter="promo">Promo / Ads</button>
+        </div>
+
+        <div class="portfolio-grid" id="portfolioGrid">
+            <!-- Portfolio items will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<div class="stats-section">
+    <div class="container">
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>50+</h3>
+                <p>Videos Edited</p>
+            </div>
+            <div class="stat-card">
+                <h3>50K+</h3>
+                <p>Total Views</p>
+            </div>
+            <div class="stat-card">
+                <h3>96.8%</h3>
+                <p>Client Retention</p>
+            </div>
+            <div class="stat-card">
+                <h3>24H</h3>
+                <p>Avg Delivery</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="cta-section">
+    <div class="container">
+        <div class="cta-box">
+            <h2>Ready to get this quality for your content?</h2>
+            <p>Get a free sample edit — no commitment, just results.</p>
+            <a href="https://wa.me/918494043654" class="btn-primary" target="_blank">
+                <i class="fab fa-whatsapp"></i> Get Free Sample
+            </a>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-grid">
+            <div class="footer-logo-area">
+                <a href="index.html" class="logo" style="color:white;">
+                    <img src="https://ik.imagekit.io/k6lrn9lgb/New%20Project%205%20_BD7D037_.png" alt="ShredFX">
+                    SHRED<span style="color:var(--mint);">FX</span>
+                </a>
+                <p style="margin-top: 12px; font-size:0.85rem;">High-retention reel edits that grow your channel.</p>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/shredfx_" target="_blank"><i class="fab fa-instagram"></i></a>
+                    <a href="https://wa.me/918494043654" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:edits.shredfx@gmail.com"><i class="far fa-envelope"></i></a>
+                </div>
+            </div>
+            <div class="footer-links"><h4>Explore</h4><a href="index.html">Home</a><a href="portfolio.html">Portfolio</a><a href="services.html">Pricing</a><a href="contact.html">Contact</a></div>
+            <div class="footer-links"><h4>Services</h4><a href="services.html">Reel Editing</a><a href="services.html">YouTube Shorts</a><a href="services.html">Subtitles</a><a href="services.html">Packages</a></div>
+            <div class="footer-links"><h4>Contact</h4><a href="https://wa.me/918494043654">+91 84940 43654</a><a href="mailto:edits.shredfx@gmail.com">edits.shredfx@gmail.com</a></div>
+        </div>
+        <div class="copyright">© 2026 ShredFX — Premium Video Editing for Creators.</div>
+    </div>
+</footer>
+
+<script>
+    // Portfolio data
+    const portfolioItems = [
+        {
+            id: 1,
+            title: "Gym Motivation Reel",
+            description: "Hardcore sync & energy cuts with retention hooks",
+            category: "reels",
+            videoId: "-QdJbB6eTaI",
+            tags: ["Fast Cuts", "Beat Sync", "Motivation"]
+        },
+        {
+            id: 2,
+            title: "Business Ad Edit",
+            description: "Cinematic brand storytelling for social media",
+            category: "promo",
+            videoId: "GXPDDCnIx1M",
+            tags: ["Cinematic", "Branding", "Professional"]
+        },
+        {
+            id: 3,
+            title: "Facts Channel Short",
+            description: "Motion graphics & retention-focused pacing",
+            category: "youtube",
+            videoId: "UJL89ZG16Ew",
+            tags: ["Motion Graphics", "Educational", "Viral"]
+        },
+        {
+            id: 4,
+            title: "Informative YouTube Shorts",
+            description: "High retention structure with dynamic transitions",
+            category: "promo",
+            videoId: "zqdxZBeQ0d8",
+            tags: ["Promo", "Dynamic", "Engaging"]
+        },
+        {
+           id: 5,
+          title: "Motivational Reel",
+            description: "Transitions & smooth text animations for premium video edit.",
+          category: "reels",
+         videoId: "Z7MqRjbHxog",
+          tags: ["Motivation", "Color Grading", "Trending"]
+        },
+        {
+           id: 6,
+            title: "Product Review Short",
+            description: "Engaging product showcase with motion graphics and text animations",
+            category: "reels",
+            videoId: "FTk-ZzCrPKc",
+            tags: ["Product", "Review", "Lead-Generating"]
+        },
+    ];
+
+    function renderPortfolioItems(category = 'all') {
+        const grid = document.getElementById('portfolioGrid');
+        if (!grid) return;
+        
+        const filtered = category === 'all' 
+            ? portfolioItems 
+            : portfolioItems.filter(item => item.category === category);
+        
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div style="text-align:center; padding:60px;">No videos found in this category</div>';
+            return;
+        }
+        
+        grid.innerHTML = filtered.map(item => `
+            <div class="portfolio-item" data-category="${item.category}">
+                <div class="video-wrapper">
+                    <iframe src="https://www.youtube.com/embed/${item.videoId}" frameborder="0" allowfullscreen loading="lazy"></iframe>
+                </div>
+                <div class="portfolio-info">
+                    <h3>${item.title}</h3>
+                    <p>${item.description}</p>
+                    <div class="portfolio-tags">
+                        ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Filter functionality
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            const filter = btn.getAttribute('data-filter');
+            renderPortfolioItems(filter);
+        });
+    });
+
+    // Initial render
+    renderPortfolioItems('all');
+
+    // Mobile menu
+    const menuBtn = document.getElementById('menuBtn');
+    const navLinks = document.getElementById('navLinks');
+    if(menuBtn) {
+        menuBtn.addEventListener('click', () => {
+            navLinks.classList.toggle('open');
+        });
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => navLinks.classList.remove('open'));
+        });
+    }
+
+    // Update navbar based on auth state
+    function updateNavAuth() {
+        const user = auth.currentUser;
+        const navContainer = document.querySelector('.nav-links');
+        if (!navContainer) return;
+        
+        const existingAuth = document.getElementById('firebaseAuthBtn');
+        if (existingAuth) existingAuth.remove();
+        
+        const authDiv = document.createElement('div');
+        authDiv.id = 'firebaseAuthBtn';
+        
+        if (user) {
+            authDiv.innerHTML = `<a href="dashboard.html" class="nav-link" style="background:var(--gradient); color:white; padding:6px 16px; border-radius:40px;"><i class="fas fa-user"></i> Dashboard</a>`;
+        } else {
+            authDiv.innerHTML = `<a href="login.html" class="nav-link" style="background:var(--mint-soft); padding:6px 16px; border-radius:40px;"><i class="fas fa-sign-in-alt"></i> Login</a>`;
+        }
+        navContainer.appendChild(authDiv);
+    }
+    
+    // Listen to auth state
+    auth.onAuthStateChanged((user) => {
+        updateNavAuth();
+    });
+    
+    // Initial load
+    updateNavAuth();
+</script>
+</body>
+</html>
